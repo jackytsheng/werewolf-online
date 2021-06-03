@@ -1,0 +1,8 @@
+export enum Role {
+  WEREWOLF = "WEREWOLF",
+  WITCH = "WITCH",
+  VILLAGER = "VILLAGER",
+  HUNTER = "HUNTER",
+  PROPHET = "PROPHET",
+  IDIOT = "IDIOT",
+}
