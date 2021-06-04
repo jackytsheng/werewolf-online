@@ -20,12 +20,6 @@
       integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
       crossorigin="anonymous"
     />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-      crossorigin="anonymous"
-    ></script>
-    <script src="./js/main.js"></script>
 
     <!-- Own Css -->
     <link rel="stylesheet" href="css/style.css" />
@@ -55,7 +49,7 @@
           <div class="dropdown local-form-control">
             <label for="room">Room</label>
             <button
-              class="btn btn-secondary dropdown-toggle"
+              class="btn btn-light dropdown-toggle"
               type="button"
               id="dropdownMenuButton"
               data-bs-toggle="dropdown"
@@ -64,22 +58,22 @@
             </button>
             <ul class="dropdown-menu">
               <li>
-                <a class="dropdown-item" href="#" onclick="clickItem('Room1')"
+                <a class="dropdown-item" href="#" onclick="clickItem('Room 1')"
                   >Room 1</a
                 >
               </li>
               <li>
-                <a class="dropdown-item" href="#" onclick="clickItem('Room2')"
+                <a class="dropdown-item" href="#" onclick="clickItem('Room 2')"
                   >Room 2</a
                 >
               </li>
               <li>
-                <a class="dropdown-item" href="#" onclick="clickItem('Room3')"
+                <a class="dropdown-item" href="#" onclick="clickItem('Room 3')"
                   >Room 3</a
                 >
               </li>
               <li>
-                <a class="dropdown-item" href="#" onclick="clickItem('Room4')"
+                <a class="dropdown-item" href="#" onclick="clickItem('Room 4')"
                   >Room 4</a
                 >
               </li>
@@ -88,10 +82,17 @@
 
           <button
             type="button"
-            onclick="navigateToChat()"
+            onclick="navigateToChat('chat.html')"
             class="join-btn btn btn-outline-light"
           >
             Join Chat
+          </button>
+          <button
+            type="button"
+            onclick="navigateTo('tool.html')"
+            class="join-btn btn btn-outline-light"
+          >
+            Card Dealer
           </button>
         </form>
       </main>
@@ -104,16 +105,23 @@
       };
 
       // Navigate to chat
-      const navigateToChat = () => {
+      const navigateTo = (url) => {
         const href = window.location.href;
         const arr = href.split("/");
         const domainAndPort = arr[0] + "//" + arr[2];
         const username = document.getElementById("username").value;
         const room = document.getElementById("dropdownMenuButton").innerHTML;
+        if (url === "tool.html") window.location = `../${url}`;
         if (username && room.trim() !== "Select Room")
           window.location.href =
-            domainAndPort + `/chat.html?username=${username}&room=${room}`;
+            domainAndPort +
+            `/${url}?username=${username}&room=${room.replace(" ", "")}`;
       };
     </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap -->
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <!-- Own Css -->
+    <link rel="stylesheet" href="css/tool-style.css" />
+
+    <title>Werewolf Tool</title>
+  </head>
+  <body>
+    <div>
+      <button
+        class="btn btn-outline-secondary"
+        onclick="window.location='../index.html'"
+      >
+        Back to Home
+      </button>
+      <section class="Dealer">
+        <h2>Dealer</h2>
+        <div class="role-picker">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">平民</span>
+            <input
+              type="number"
+              min="0"
+              max="5"
+              value="0"
+              onclick="add(value,'平民')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">狼人</span>
+            <input
+              type="number"
+              min="0"
+              max="5"
+              value="0"
+              onclick="add(value,'狼人')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">预言家</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'预言家')"
+              class="form-control"
+              id="basic-profit"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">女巫</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'女巫')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">猎人</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'猎人')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">白痴</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'白痴')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">混血儿</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'混血儿')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">狼王</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'狼王')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">守卫</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'守卫')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">丘比特</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'丘比特')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">白狼</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'白狼')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon">骑士</span>
+            <input
+              type="number"
+              min="0"
+              max="1"
+              value="0"
+              onclick="add(value,'骑士')"
+              class="form-control"
+              id="basic-url"
+            />
+          </div>
+          <div style="width: 130px"></div>
+          <div style="width: 130px"></div>
+          <div style="width: 130px"></div>
+          <div style="width: 130px"></div>
+          <div style="width: 130px"></div>
+          <div style="width: 130px"></div>
+          <div style="width: 130px"></div>
+          <div style="width: 130px"></div>
+        </div>
+
+        <button class="btn btn-outline-secondary deal-btn" onclick="deal()">
+          发牌
+        </button>
+        <h2>Result</h2>
+        <div class="deal-result" id="deal-result"></div>
+      </section>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let roleArray = [];
+      let roleObj = {};
+
+      const add = (value, role) => {
+        roleObj[role] = value;
+      };
+
+      const objToArray = () => {
+        const roles = Object.keys(roleObj);
+        roleArray = roles.reduce(
+          (per, cur) => [...per, ...Array(parseInt(roleObj[cur])).fill(cur)],
+          []
+        );
+      };
+
+      const shuffle = (array) => {
+        let currentIndex = array.length;
+        let randomIndex;
+
+        // While there remain elements to shuffle...
+        while (currentIndex !== 0) {
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+
+          // And swap it with the current element.
+          [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex],
+            array[currentIndex],
+          ];
+        }
+
+        return array;
+      };
+
+      const styledRole = {
+        狼人: "<span style='color:#f54748'>狼人<span>",
+        预言家: "<span style='color:#ac66cc'>预言家<span>",
+        平民: "<span style='color:#bfbfbf'>平民<span>",
+        猎人: "<span style='color:#39a6a3'>猎人<span>",
+        女巫: "<span style='color:#fc92e3'>女巫<span>",
+        白痴: "<span style='color:#d5dbb3'>白痴<span>",
+        狼王: "<span style='color:#7f2f26'>狼王<span>",
+        混血儿: "<span style='color:#6f655d'>混血儿<span>",
+        丘比特: "<span style='color:#feaea5'>丘比特<span>",
+        守卫: "<span style='color:#ffaf48'>守卫<span>",
+        白狼: "<span style='color:#a1a29e'>白狼<span>",
+        骑士: "<span style='color:#5c6a40'>骑士<span>",
+      };
+      const deal = () => {
+        objToArray();
+        const roles = shuffle(roleArray);
+        console.log(roles);
+        const DOM = `
+        <div class="card">
+          <div class="card-body">
+            ${roles.reduce(
+              (pre, cur, i) =>
+                pre + `<div>${i + 1} 号玩家：${styledRole[cur]}</div>`,
+              ""
+            )}
+          </div>
+        </div>`;
+
+        document.getElementById("deal-result").innerHTML = DOM;
+      };
+    </script>
+  </body>
+</html>
