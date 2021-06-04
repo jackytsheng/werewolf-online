@@ -36,7 +36,7 @@
               min="0"
               max="5"
               value="0"
-              onclick="add(value,'平民')"
+              onchange="add(value,'平民')"
               class="form-control"
               id="basic-url"
             />
@@ -49,7 +49,7 @@
               min="0"
               max="5"
               value="0"
-              onclick="add(value,'狼人')"
+              onchange="add(value,'狼人')"
               class="form-control"
               id="basic-url"
             />
@@ -62,7 +62,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'预言家')"
+              onchange="add(value,'预言家')"
               class="form-control"
               id="basic-profit"
             />
@@ -75,7 +75,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'女巫')"
+              onchange="add(value,'女巫')"
               class="form-control"
               id="basic-url"
             />
@@ -88,7 +88,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'猎人')"
+              onchange="add(value,'猎人')"
               class="form-control"
               id="basic-url"
             />
@@ -101,7 +101,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'白痴')"
+              onchange="add(value,'白痴')"
               class="form-control"
               id="basic-url"
             />
@@ -114,7 +114,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'混血儿')"
+              onchange="add(value,'混血儿')"
               class="form-control"
               id="basic-url"
             />
@@ -127,7 +127,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'狼王')"
+              onchange="add(value,'狼王')"
               class="form-control"
               id="basic-url"
             />
@@ -140,7 +140,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'守卫')"
+              onchange="add(value,'守卫')"
               class="form-control"
               id="basic-url"
             />
@@ -153,7 +153,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'丘比特')"
+              onchange="add(value,'丘比特')"
               class="form-control"
               id="basic-url"
             />
@@ -166,7 +166,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'白狼')"
+              onchange="add(value,'白狼')"
               class="form-control"
               id="basic-url"
             />
@@ -179,7 +179,7 @@
               min="0"
               max="1"
               value="0"
-              onclick="add(value,'骑士')"
+              onchange="add(value,'骑士')"
               class="form-control"
               id="basic-url"
             />
@@ -212,13 +212,14 @@
       let roleObj = {};
 
       const add = (value, role) => {
-        roleObj[role] = value;
+        const number = /^([0-9])$/;
+        roleObj[role] = parseInt(number.test(value) ? value : 0);
       };
 
       const objToArray = () => {
         const roles = Object.keys(roleObj);
         roleArray = roles.reduce(
-          (per, cur) => [...per, ...Array(parseInt(roleObj[cur])).fill(cur)],
+          (per, cur) => [...per, ...Array(roleObj[cur]).fill(cur)],
           []
         );
       };
