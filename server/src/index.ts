@@ -1,20 +1,22 @@
-import Dealer from "./game/Dealer";
-import { Role } from "./util/type";
+import express from "express";
+import cors from "cors";
+import http from "http";
+const socket = require("socket.io");
 
-const testDealer = new Dealer([
-  Role.HUNTER,
-  Role.WITCH,
-  Role.IDIOT,
-  Role.PROPHET,
-  Role.VILLAGER,
-  Role.VILLAGER,
-  Role.VILLAGER,
-  Role.VILLAGER,
-  Role.WEREWOLF,
-  Role.WEREWOLF,
-  Role.WEREWOLF,
-  Role.WEREWOLF,
-]);
+// I genuiently don't get the following shit
+const app = express();
+app.use(cors());
+const server = http.createServer(app);
+const io = socket(server);
 
-testDealer.shuffle();
-console.log(testDealer.print());
+io.on("connection", (socket: any) => {
+  socket.on("joinRoom", ({}) => {
+    console.log("new user join room");
+  });
+});
+
+const PORT = process.env.PORT || 8000;
+
+server.listen(PORT, () =>
+  console.log(`Socket.io server running on port ${PORT}`)
+);

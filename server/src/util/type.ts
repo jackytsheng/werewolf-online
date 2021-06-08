@@ -6,3 +6,4 @@ export enum Role {
   PROPHET = "PROPHET",
   IDIOT = "IDIOT",
 }
+
