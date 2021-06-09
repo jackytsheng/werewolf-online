@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ChatBubble from "../components/ChatBubble";
+import useSocket from "../hooks/socket";
 import { color } from "../themes";
 
 const fakePaylod = {

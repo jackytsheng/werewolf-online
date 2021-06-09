@@ -60,7 +60,6 @@ const IconText = styled.span({
 
 const LobbyHome = () => {
   const [name, setName] = useState("");
-
   const onEnterName = (event: ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();
     event.preventDefault();
