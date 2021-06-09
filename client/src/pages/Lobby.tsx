@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
+import { useLocation, useParams } from "react-router";
 import styled from "styled-components";
 import ChatBubble from "../components/ChatBubble";
+import useQuery from "../hooks/urlQuery";
 import { color } from "../themes";
 
 const fakePaylod = {
@@ -29,6 +31,8 @@ const MessageContainer = styled.div({
 });
 
 const Lobby = () => {
+  const query = useQuery("room");
+  console.log(query);
   return (
     <BackWrapper>
       <MessageContainer>
