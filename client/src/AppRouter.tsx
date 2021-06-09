@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useContext, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LobbyHome from "./pages/LobbyHome";
 import Lobby from "./pages/Lobby";
@@ -9,18 +9,21 @@ import useSocket from "./hooks/socket";
 // ReactGA.pageview('/homepage')
 
 const AppRouter = () => {
-  useSocket({ userId: 1 });
+  // Trigger chagnes to enable socket
+  const [userId, setUserId] = useState(1);
+  const { join } = useSocket({ userId });
+
   return (
     <Router>
       <Switch>
         <Route path="/lobby" exact>
-          <Lobby></Lobby>
+          <Lobby />
         </Route>
         <Route path="/" exact>
-          <LobbyHome></LobbyHome>
+          <LobbyHome />
         </Route>
         <Route path="/dealer" exact>
-          <Dealer></Dealer>
+          <Dealer />
         </Route>
       </Switch>
     </Router>

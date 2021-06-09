@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { color, border } from "../themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,7 +11,6 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@material-ui/core";
-
 const Layout = styled.div({
   background: color.lightColor,
   position: "fixed",
@@ -58,7 +57,7 @@ const IconText = styled.span({
   margin: "0 0.4rem",
 });
 
-const LobbyHome = () => {
+const LobbyHome = ({}: any) => {
   const [name, setName] = useState("");
   const onEnterName = (event: ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();

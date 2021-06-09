@@ -14,6 +14,10 @@ const io = socket(server, {
 
 io.on("connection", (socket: any) => {
   console.log("some connection established");
+
+  socket.on("joinRoom", () => {
+    console.log("New Join" + new Date().toLocaleDateString());
+  });
 });
 
 const PORT = process.env.PORT || 8000;
