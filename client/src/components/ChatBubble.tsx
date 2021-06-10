@@ -43,17 +43,13 @@ const Text = styled.p({
   marginBottom: "1rem",
 });
 
-export type ChatBubbleType = {
+export type Message = {
   time: String;
   speaker: String;
   text: String;
 };
 
-const ChatBubble: React.FC<ChatBubbleType> = ({
-  time,
-  speaker,
-  text,
-}: ChatBubbleType) => {
+const ChatBubble: React.FC<Message> = ({ time, speaker, text }: Message) => {
   return (
     <BubbleWrapper>
       <MetaText speaker={speaker} time={time} />

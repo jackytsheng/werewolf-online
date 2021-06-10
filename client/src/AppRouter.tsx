@@ -3,9 +3,23 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LobbyHome from "./pages/LobbyHome";
 import Lobby from "./pages/Lobby";
 import Dealer from "./pages/Dealer";
+import { Message } from "./components/ChatBubble";
 
 // TODO: Implement Google analysis
 // ReactGA.pageview('/homepage')
+
+const fakeMessages: Message[] = [
+  {
+    time: "8:03 pm",
+    speaker: "Sponge Bob",
+    text: "Welcome to Werewolf Lobby",
+  },
+  {
+    time: "8:02 pm",
+    speaker: "Jacky",
+    text: "Hello World",
+  },
+];
 
 const AppRouter = () => {
   return (

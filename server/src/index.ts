@@ -1,5 +1,6 @@
 import express from "express";
 import http from "http";
+import { MessagePayload } from "./type";
 const socket = require("socket.io");
 
 // I genuiently don't get the following shit
@@ -17,6 +18,10 @@ io.on("connection", (socket: any) => {
 
   socket.on("joinRoom", () => {
     console.log("New Join" + new Date().toLocaleDateString());
+  });
+
+  socket.on("message", (payload: MessagePayload) => {
+    console.log(payload.content);
   });
 });
 

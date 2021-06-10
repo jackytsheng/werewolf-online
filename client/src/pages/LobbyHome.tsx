@@ -91,7 +91,6 @@ const LobbyHome = ({}: any) => {
                 onChange={onEnterName}
               />
             </FormControl>
-
             <Button
               component={Link}
               to="/lobby"
