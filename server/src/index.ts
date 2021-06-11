@@ -1,6 +1,6 @@
 import express from "express";
 import http from "http";
-import { MessagePayload } from "./type";
+import { MessagePayload, SocketEvent } from "./type";
 const socket = require("socket.io");
 
 // I genuiently don't get the following shit
@@ -13,14 +13,16 @@ const io = socket(server, {
   },
 });
 
-io.on("connection", (socket: any) => {
-  console.log("some connection established");
+io.on(SocketEvent.Connection, (socket: any) => {
+  console.log(`some connection established at ${new Date().toUTCString()}`);
 
-  socket.on("joinRoom", () => {
+  socket.on(SocketEvent.CreateRoom, () => {});
+
+  socket.on(SocketEvent.JoinRoom, (roomId: String) => {
     console.log("New Join" + new Date().toLocaleDateString());
   });
 
-  socket.on("message", (payload: MessagePayload) => {
+  socket.on(SocketEvent.Message, (payload: MessagePayload) => {
     console.log(payload.content);
   });
 });
