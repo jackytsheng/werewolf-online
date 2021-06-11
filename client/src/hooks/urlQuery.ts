@@ -1,11 +1,13 @@
 import { useLocation } from "react-router";
 
-const useQuery = (param: String = ""): String => {
+const useQuery = (param: string = ""): string => {
   const query = useLocation().search;
 
-  const regrex = new RegExp(`(\\?)(${param})\\=`, "g");
+  const regrex = new RegExp(`(\\?|\\&)(${param})\=([^&])+`, "g");
 
-  return regrex.test(query) ? query.split(`${param}=`)[1] : "";
+  const extract = regrex.exec(query);
+
+  return extract ? extract[0].split(`${param}=`)[1] : "";
 };
 
 export default useQuery;

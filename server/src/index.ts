@@ -1,6 +1,9 @@
+import { randomUUID } from "crypto";
 import express from "express";
 import http from "http";
-import { MessagePayload, SocketEvent } from "./type";
+import { JoinRoomPayload, MessagePayload, SocketEvent, User } from "./type";
+import timestamp from "./util/timestamp";
+import { Socket } from "socket.io";
 const socket = require("socket.io");
 
 // I genuiently don't get the following shit
@@ -13,17 +16,39 @@ const io = socket(server, {
   },
 });
 
-io.on(SocketEvent.Connection, (socket: any) => {
-  console.log(`some connection established at ${new Date().toUTCString()}`);
+let roomIds: String[] = [];
+let users: User[] = [];
 
-  socket.on(SocketEvent.CreateRoom, () => {});
+io.on(SocketEvent.Connection, (socket: Socket) => {
+  console.log(timestamp(`${socket.id} established connection`));
 
-  socket.on(SocketEvent.JoinRoom, (roomId: String) => {
-    console.log("New Join" + new Date().toLocaleDateString());
+  socket.on(SocketEvent.CreateRoom, () => {
+    const roomId = randomUUID();
+    roomIds.push(roomId);
+    console.log(timestamp(`${roomId} Created By ${socket.id}`));
+    socket.emit(SocketEvent.CreateRoom, roomId);
+  });
+
+  socket.on(SocketEvent.JoinRoom, ({ roomId, userName }: JoinRoomPayload) => {
+    socket.join(roomId);
+    const user: User = {
+      userName,
+      roomId,
+      userId: socket.id,
+    };
+    users.push(user);
+    console.log(
+      timestamp(`${userName} with id ${socket.id} Joined Room ${roomId}`)
+    );
   });
 
   socket.on(SocketEvent.Message, (payload: MessagePayload) => {
     console.log(payload.content);
+  });
+
+  socket.on(SocketEvent.Disconnect, () => {
+    users = users.filter((user) => user.userId !== socket.id);
+    console.log(timestamp(`${socket.id} disconnect`));
   });
 });
 

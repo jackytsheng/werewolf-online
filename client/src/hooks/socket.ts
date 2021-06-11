@@ -5,42 +5,69 @@ import io, { Socket } from "socket.io-client";
 // Video is found here https://www.youtube.com/watch?v=R3UJAIMjWpU&ab_channel=JonasGr%C3%B8ndahl
 
 const baseUrl = "http://localhost:8000";
-// const fakeroom = "1234";
+
+enum SocketEvent {
+  Message = "message",
+  JoinRoom = "joinRoom",
+  CreateRoom = "createRoom",
+  Connect = "connect",
+  Disconnect = "disconnect",
+  Reconnect = "reconnect",
+}
 
 type SocketProps = {
-  userId: String;
-  roomId: String;
-  enabled?: Boolean;
+  roomId: string;
+  userName: string;
+  enabled?: boolean;
   onConnected?: () => void;
 };
 
-export type MessagePayload = {
-  content: String;
-  userId: String;
-  date: Date;
+type JoinRoomPayload = {
+  roomId: string;
+  userName: string;
+};
+
+export type Message = {
+  content: string;
+  userName: string;
+  time: string;
+};
+
+export type User = {
+  userName: string;
+  userId: string;
+};
+
+export type Game = {
+  roomId: string;
+  user: User;
 };
 
 const useSocket = ({
-  userId,
   roomId,
+  userName,
   enabled = true,
   onConnected,
 }: SocketProps) => {
   const ref = useRef<Socket>();
-  const [messages, setMessages] = useState<MessagePayload[]>([]);
+  const [gameInfo, setGameInfo] = useState<Game>();
+  const [messages, setMessages] = useState<Message[]>([]);
 
-  const join = () => {
-    ref.current!.emit("joinRoom");
+  const create = () => {
+    ref.current!.emit(SocketEvent.CreateRoom);
   };
-  const send = (msg: String) => {
-    const payload: MessagePayload = {
-      userId,
-      date: new Date(),
-      content: msg,
-    };
-    ref.current!.emit("message", payload);
 
-    ref.current!.emit("joinRoom");
+  const join = (payload: JoinRoomPayload) => {
+    ref.current!.emit(SocketEvent.JoinRoom, payload);
+  };
+
+  const send = (userName: string, content: string) => {
+    const payload: Message = {
+      time: new Date().toLocaleTimeString(),
+      userName,
+      content,
+    };
+    ref.current!.emit(SocketEvent.Message, payload);
   };
 
   useEffect((): any => {
@@ -51,18 +78,26 @@ const useSocket = ({
 
     const socket = io(`${baseUrl}`);
 
-    socket.emit("joinRoom", userId);
+    const info: Game = {
+      user: { userName, userId: socket.id },
+      roomId,
+    };
+    setGameInfo(info);
 
-    socket.on("message", (payload: MessagePayload) => {
+    socket.on(SocketEvent.CreateRoom, (roomId: string) => {
+      setGameInfo({ ...gameInfo, roomId } as Game);
+    });
+
+    socket.on(SocketEvent.Message, (payload: Message) => {
       setMessages((prev) => prev.concat(payload));
     });
 
-    socket.on("disconnect", () => {
+    socket.on(SocketEvent.Disconnect, () => {
       console.log("disconnected");
     });
 
     // call back that passed in if hook is called
-    socket.on("connect", () => {
+    socket.on(SocketEvent.Connect, () => {
       if (onConnected) {
         onConnected();
       }
@@ -70,8 +105,7 @@ const useSocket = ({
       console.log(`Socket is connected at ${baseUrl}`);
     });
 
-    socket.on("reconnect", () => {
-      socket.emit("joinRoom", userId);
+    socket.on(SocketEvent.Reconnect, () => {
       console.log("reconnect successful");
     });
 
@@ -83,13 +117,13 @@ const useSocket = ({
       console.log(`${socket.id} is disconnected`);
       socket.disconnect();
     };
-  }, [enabled, userId]);
+  }, [enabled, roomId, userName]);
 
   return {
-    socket: ref.current,
-    send,
     messages,
+    send,
     join,
+    create,
   };
 };
 

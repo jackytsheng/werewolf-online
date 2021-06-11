@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Message } from "../hooks/socket";
 import { border, color } from "../themes";
 
 const TimeStyle = styled.span({
@@ -43,17 +44,15 @@ const Text = styled.p({
   marginBottom: "1rem",
 });
 
-export type Message = {
-  time: String;
-  speaker: String;
-  text: String;
-};
-
-const ChatBubble: React.FC<Message> = ({ time, speaker, text }: Message) => {
+const ChatBubble: React.FC<Message> = ({
+  time,
+  userName,
+  content,
+}: Message) => {
   return (
     <BubbleWrapper>
-      <MetaText speaker={speaker} time={time} />
-      <Text>{text}</Text>
+      <MetaText speaker={userName} time={time} />
+      <Text>{content}</Text>
     </BubbleWrapper>
   );
 };

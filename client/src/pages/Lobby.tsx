@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ChatBubble from "../components/ChatBubble";
-// import useQuery from "../hooks/urlQuery";
 import { color } from "../themes";
-import { Message } from "../components/ChatBubble";
 import TextField from "@material-ui/core/TextField";
-import useSocket, { MessagePayload } from "../hooks/socket";
+import useSocket, { Message } from "../hooks/socket";
 import useQuery from "../hooks/urlQuery";
-import { payloadToMessage } from "../mapper";
+import { useHistory } from "react-router";
 
 const BackWrapper = styled.div({
   display: "flex",
@@ -36,12 +34,17 @@ const TextContainer = styled.div({
   paddingBottom: "1rem",
 });
 
-type LobbyProps = {
-  messages: Message[];
-};
-
 const Lobby = () => {
-  const { send, messages } = useSocket({ userId: "querysd", roomId: "sdsdsd" });
+  // get username and room from uri
+  const userName = decodeURI(useQuery("username"));
+  const roomId = useQuery("room");
+
+  const { send, messages } = useSocket({ roomId, userName });
+
+  const history = useHistory();
+  useEffect(() => {
+    console.log(`${userName} join room ${roomId}`);
+  }, [roomId, userName]);
 
   const [value, setValue] = useState("");
 
@@ -55,7 +58,7 @@ const Lobby = () => {
     if (key === "Enter") {
       console.log(value);
       setValue("");
-      send(value);
+      // send(value);
       event.preventDefault();
     }
   };
@@ -64,14 +67,10 @@ const Lobby = () => {
     <BackWrapper>
       <TextContainer>
         <MessageContainer>
-          {messages.map((payload: MessagePayload) => {
-            const message = payloadToMessage(payload);
+          {messages.map((message: Message) => {
             <ChatBubble
               {...message}
-              key={`${message.speaker.replaceAll(
-                " ",
-                ""
-              )}_${message.time.replaceAll(" ", "")}`}
+              key={`${message.userName.replaceAll(" ", "")}_${message.time}`}
             ></ChatBubble>;
           })}
         </MessageContainer>

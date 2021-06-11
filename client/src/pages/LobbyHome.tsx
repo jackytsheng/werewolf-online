@@ -4,13 +4,15 @@ import { color, border } from "../themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWolfPackBattalion } from "@fortawesome/free-brands-svg-icons";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Button,
   FormControl,
   InputLabel,
   OutlinedInput,
 } from "@material-ui/core";
+import useQuery from "../hooks/urlQuery";
+
 const Layout = styled.div({
   background: color.lightColor,
   position: "fixed",
@@ -59,6 +61,12 @@ const IconText = styled.span({
 
 const LobbyHome = ({}: any) => {
   const [name, setName] = useState("");
+  const roomId = useQuery("room");
+
+  useEffect(() => {
+    console.log(`Room is set to be ${roomId}`);
+  }, [roomId]);
+
   const onEnterName = (event: ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();
     event.preventDefault();
@@ -93,13 +101,17 @@ const LobbyHome = ({}: any) => {
             </FormControl>
             <Button
               component={Link}
-              to="/lobby"
+              to={
+                roomId
+                  ? `/lobby?room=${roomId}&username=${encodeURI(name)}`
+                  : `/lobby?username=${name}`
+              }
               fullWidth={true}
               variant="outlined"
               disabled={!name}
             >
               <FontAwesomeIcon icon={faPlay} />
-              <IconText>Start</IconText>
+              <IconText>{roomId ? "Join" : "Play"} </IconText>
             </Button>
             <Button
               component={Link}

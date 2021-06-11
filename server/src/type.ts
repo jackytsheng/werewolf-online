@@ -1,6 +1,6 @@
 export type MessagePayload = {
-  content: String;
-  userId: String;
+  content: string;
+  userId: string;
   date: Date;
 };
 
@@ -9,5 +9,16 @@ export enum SocketEvent {
   JoinRoom = "joinRoom",
   CreateRoom = "createRoom",
   Connection = "connection",
-  Disconnection = "disconnection",
+  Disconnect = "disconnect",
 }
+
+export type User = {
+  roomId: string;
+  userId: string;
+  userName: string;
+};
+
+export type JoinRoomPayload = {
+  roomId: string;
+  userName: string;
+};
