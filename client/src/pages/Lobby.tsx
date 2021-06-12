@@ -39,10 +39,12 @@ const Lobby = () => {
   const userName = decodeURI(useQuery("username"));
   const roomId = useQuery("room");
 
-  const { send, messages } = useSocket({ roomId, userName });
+  const { send, messages, join, create } = useSocket({ roomId, userName });
 
-  const history = useHistory();
   useEffect(() => {
+    if (!roomId) {
+      create(userName);
+    }
     console.log(`${userName} join room ${roomId}`);
   }, [roomId, userName]);
 

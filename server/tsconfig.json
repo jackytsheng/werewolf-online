@@ -16,6 +16,10 @@
   },
   "compilerOptions": {
     // typescript options here
+
+    "lib": [
+      "ESNext.String"
+    ]
   },
 
   "include": ["src"],

@@ -53,8 +53,9 @@ const useSocket = ({
   const [gameInfo, setGameInfo] = useState<Game>();
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const create = () => {
-    ref.current!.emit(SocketEvent.CreateRoom);
+  const create = (userName: string) => {
+    ref.current!.emit(SocketEvent.CreateRoom, userName);
+    console.log(`room created by ${userName}`);
   };
 
   const join = (payload: JoinRoomPayload) => {
@@ -85,6 +86,7 @@ const useSocket = ({
     setGameInfo(info);
 
     socket.on(SocketEvent.CreateRoom, (roomId: string) => {
+      console.log(`${roomId} room ID is received`);
       setGameInfo({ ...gameInfo, roomId } as Game);
     });
 

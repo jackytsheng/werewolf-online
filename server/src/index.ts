@@ -16,16 +16,17 @@ const io = socket(server, {
   },
 });
 
-let roomIds: String[] = [];
+let roomsId: string[] = [];
 let users: User[] = [];
 
 io.on(SocketEvent.Connection, (socket: Socket) => {
   console.log(timestamp(`${socket.id} established connection`));
 
-  socket.on(SocketEvent.CreateRoom, () => {
+  socket.on(SocketEvent.CreateRoom, (userName: string) => {
     const roomId = randomUUID();
-    roomIds.push(roomId);
-    console.log(timestamp(`${roomId} Created By ${socket.id}`));
+    socket.join(roomId);
+    roomsId.push(roomId);
+    console.log(timestamp(`Room id ${roomId} is created by ${userName}`));
     socket.emit(SocketEvent.CreateRoom, roomId);
   });
 

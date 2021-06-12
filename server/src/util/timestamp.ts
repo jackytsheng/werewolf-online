@@ -1,2 +1,5 @@
 export default (text: String) =>
-  `[${new Date().toLocaleString().replace(",", "")} ${test}`;
+  `[${new Date()
+    .toLocaleString()
+    .replace(",", "")
+    .replaceAll("/", "-")}] ${text}`;
