@@ -53,16 +53,17 @@ const useSocket = ({
   const [gameInfo, setGameInfo] = useState<Game>();
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const create = (userName: string) => {
+  const createRoom = (userName: string) => {
     ref.current!.emit(SocketEvent.CreateRoom, userName);
     console.log(`room created by ${userName}`);
   };
 
-  const join = (payload: JoinRoomPayload) => {
+  const join = (roomId: string, userName: string) => {
+    const payload: JoinRoomPayload = { roomId, userName };
     ref.current!.emit(SocketEvent.JoinRoom, payload);
   };
 
-  const send = (userName: string, content: string) => {
+  const send = (content: string) => {
     const payload: Message = {
       time: new Date().toLocaleTimeString(),
       userName,
@@ -79,6 +80,17 @@ const useSocket = ({
 
     const socket = io(`${baseUrl}`);
 
+    // can be accessed anywhere inside this hook
+    ref.current = socket;
+
+    // if there isn't roomId create one
+    if (!roomId) {
+      createRoom(userName);
+    } else {
+      // if there is roomId join it instead
+      join(roomId, userName);
+    }
+
     const info: Game = {
       user: { userName, userId: socket.id },
       roomId,
@@ -87,15 +99,11 @@ const useSocket = ({
 
     socket.on(SocketEvent.CreateRoom, (roomId: string) => {
       console.log(`${roomId} room ID is received`);
-      setGameInfo({ ...gameInfo, roomId } as Game);
+      // setGameInfo({ ...gameInfo, roomId } as Game);
     });
 
     socket.on(SocketEvent.Message, (payload: Message) => {
       setMessages((prev) => prev.concat(payload));
-    });
-
-    socket.on(SocketEvent.Disconnect, () => {
-      console.log("disconnected");
     });
 
     // call back that passed in if hook is called
@@ -111,12 +119,8 @@ const useSocket = ({
       console.log("reconnect successful");
     });
 
-    // can be accessed anywhere inside this hook
-    ref.current = socket;
-
     // clean up when the property changes or dismounted
     return () => {
-      console.log(`${socket.id} is disconnected`);
       socket.disconnect();
     };
   }, [enabled, roomId, userName]);
@@ -124,8 +128,6 @@ const useSocket = ({
   return {
     messages,
     send,
-    join,
-    create,
   };
 };
 

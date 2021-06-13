@@ -39,14 +39,7 @@ const Lobby = () => {
   const userName = decodeURI(useQuery("username"));
   const roomId = useQuery("room");
 
-  const { send, messages, join, create } = useSocket({ roomId, userName });
-
-  useEffect(() => {
-    if (!roomId) {
-      create(userName);
-    }
-    console.log(`${userName} join room ${roomId}`);
-  }, [roomId, userName]);
+  const { send, messages } = useSocket({ roomId, userName });
 
   const [value, setValue] = useState("");
 
@@ -58,23 +51,21 @@ const Lobby = () => {
   const onEnter = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const { key } = event;
     if (key === "Enter") {
-      console.log(value);
       setValue("");
-      // send(value);
+      send(value);
       event.preventDefault();
     }
   };
-
   return (
     <BackWrapper>
       <TextContainer>
         <MessageContainer>
-          {messages.map((message: Message) => {
+          {messages.map((message: Message) => (
             <ChatBubble
               {...message}
               key={`${message.userName.replaceAll(" ", "")}_${message.time}`}
-            ></ChatBubble>;
-          })}
+            />
+          ))}
         </MessageContainer>
         <TextField
           fullWidth={true}

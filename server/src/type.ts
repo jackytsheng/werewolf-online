@@ -1,7 +1,7 @@
-export type MessagePayload = {
+export type Message = {
   content: string;
-  userId: string;
-  date: Date;
+  userName: string;
+  time: string;
 };
 
 export enum SocketEvent {
@@ -22,3 +22,12 @@ export type JoinRoomPayload = {
   roomId: string;
   userName: string;
 };
+
+export enum Role {
+  WEREWOLF = "WEREWOLF",
+  WITCH = "WITCH",
+  VILLAGER = "VILLAGER",
+  HUNTER = "HUNTER",
+  PROPHET = "PROPHET",
+  IDIOT = "IDIOT",
+}

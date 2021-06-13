@@ -1,6 +1,6 @@
-import { Role } from "../util/type";
+import { Role } from "../type";
 import shuffle from "../util/shuffle";
-import capticalise from "../util/capticalise";
+import { captitalise } from "../util/message-helper";
 
 class Dealer {
   cards: Role[];
@@ -16,7 +16,7 @@ class Dealer {
 
   print = () => {
     this.cards.forEach((role, number) => {
-      console.log(`Seat ${number + 1}`, capticalise(role));
+      console.log(`Seat ${number + 1}`, captitalise(role));
     });
   };
 }
