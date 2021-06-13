@@ -4,7 +4,7 @@ import { Message } from "../hooks/socket";
 import { border, color } from "../themes";
 
 const TimeStyle = styled.span({
-  color: color.text,
+  color: color.meta,
   marginLeft: "0.25rem",
   fontWeight: "normal",
 });
@@ -12,7 +12,7 @@ const TimeStyle = styled.span({
 const Meta = styled.p({
   fontSize: "0.9375rem",
   fontWeight: "bold",
-  color: color.darkColorB,
+  color: color.midBlue,
   opacity: 0.7,
   marginBottom: "0.4375rem",
 });

@@ -1,43 +1,75 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import ChatBubble from "../components/ChatBubble";
+import { TextField, withStyles } from "@material-ui/core";
 import { color } from "../themes";
-import TextField from "@material-ui/core/TextField";
 import useSocket, { Message } from "../hooks/socket";
 import useQuery from "../hooks/urlQuery";
-import { useHistory } from "react-router";
-import Popper from "../components/Popper";
+import { ChatBubble, Popper, Title } from "../components";
+
+const CssTextField = withStyles({
+  root: {
+    "& .MuiFormLabel-root.Mui-focused": {
+      color: color.midBlue,
+    },
+    "& .MuiFilledInput-underline:after": {
+      border: `0.125rem solid ${color.midBlue}`,
+    },
+    backgroundColor: color.beige,
+    "& .MuiFilledInput-root": {
+      backgroundColor: "transparent",
+    },
+  },
+})(TextField);
 
 const BackWrapper = styled.div({
   display: "flex",
   position: "fixed",
-  justifyContent: "center",
-  alignItems: "stretch",
+  flexDirection: "column",
   top: 0,
   bottom: 0,
   left: 0,
   right: 0,
 });
 
-const TextContainer = styled.div({
-  width: "40rem",
+const Bar = styled.div({
+  backgroundColor: color.framingBrown,
+  height: "10%",
+  width: "100%",
+});
+
+const HeaderBar = styled(Bar)({
+  display: "flex",
+  paddingLeft: "2rem",
+  alignItems: "center",
+});
+
+const Main = styled.div({
+  display: "flex",
+  justifyContent: "center",
+  height: "80%",
+  backgroundColor: color.darkBlue,
+});
+
+const ChatSpace = styled.div({
+  maxWidth: "60.5rem",
+  padding: "0 3rem",
   display: "flex",
   flexDirection: "column",
-  paddingBottom: "1rem",
+  overflow: "auto",
+  backgroundColor: color.midBlue,
 });
 
 const MessageContainer = styled.div({
-  padding: "1.875rem",
+  maxWidth: "28.125rem",
+  flexDirection: "column",
+  display: "flex",
   flex: 1,
+  padding: "1.875rem",
   overflowY: "auto",
-  backgroundColor: color.white,
+  backgroundColor: color.beige,
 });
 
-const SideContainer = styled.div({
-  width: "20rem",
-  marginRight: "5rem",
-  border: "1px solid back",
-});
+const SideContainer = styled.div({ width: "50rem", display: "flex" });
 
 const Lobby = () => {
   // get username and room from uri
@@ -63,31 +95,38 @@ const Lobby = () => {
   };
   return (
     <BackWrapper>
-      <TextContainer>
-        <MessageContainer>
-          {messages.map((message: Message) => (
-            <ChatBubble
-              {...message}
-              key={`${message.userName.replaceAll(" ", "")}_${message.time}`}
-            />
-          ))}
-        </MessageContainer>
-        <TextField
-          fullWidth={true}
-          id="outlined-multiline-static"
-          label="Enter Text"
-          multiline
-          value={value}
-          variant="outlined"
-          onChange={onType}
-          onKeyDown={onEnter}
-        />
-      </TextContainer>
-      <SideContainer>
-        <Popper
-          link={`${window.location.origin}/home?room=${lobbyInfo.currentRoomId}`}
-        />
-      </SideContainer>
+      <HeaderBar>
+        <Title text="Werewolf Lobby" />
+      </HeaderBar>
+      <Main>
+        <ChatSpace>
+          <MessageContainer>
+            {messages.map((message: Message) => (
+              <ChatBubble
+                {...message}
+                key={`${message.userName.replaceAll(" ", "")}_${message.time}`}
+              />
+            ))}
+          </MessageContainer>
+        </ChatSpace>
+      </Main>
+      <Bar>
+        <SideContainer>
+          <CssTextField
+            id="multi-line-input"
+            label="Enter Message"
+            variant="filled"
+            multiline
+            rowsMax={2}
+            value={value}
+            onChange={onType}
+            onKeyDown={onEnter}
+          />
+          <Popper
+            link={`${window.location.origin}/home?room=${lobbyInfo.currentRoomId}`}
+          />
+        </SideContainer>
+      </Bar>
     </BackWrapper>
   );
 };

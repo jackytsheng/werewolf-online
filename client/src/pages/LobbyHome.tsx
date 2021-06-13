@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
-import { color, border } from "../themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWolfPackBattalion } from "@fortawesome/free-brands-svg-icons";
+import { color, border } from "../themes";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import {
@@ -12,16 +11,15 @@ import {
   OutlinedInput,
 } from "@material-ui/core";
 import useQuery from "../hooks/urlQuery";
+import { Title } from "../components";
 
 const Layout = styled.div({
-  background: color.lightColor,
+  background: color.lightBlue,
   position: "fixed",
   top: 0,
   bottom: 0,
   left: 0,
   right: 0,
-  width: "100vw",
-  height: "100vh",
 });
 
 const Panel = styled.div({
@@ -32,13 +30,9 @@ const Panel = styled.div({
 const JoinHeader = styled.header({
   textAlign: "center",
   padding: "1.25rem",
-  background: color.darkColorA,
+  background: color.framingBrown,
   borderTopLeftRadius: border.ContainerRadius,
   borderTopRightRadius: border.ContainerRadius,
-});
-
-const JoinTitleText = styled.h1({
-  color: color.white,
 });
 
 const FormContainer = styled.form({
@@ -50,7 +44,7 @@ const FormContainer = styled.form({
 
 const JoinMain = styled.main({
   padding: "1.875rem 2.5rem",
-  background: color.white,
+  background: color.beige,
   borderBottomLeftRadius: border.ContainerRadius,
   borderBottomRightRadius: border.ContainerRadius,
 });
@@ -78,10 +72,7 @@ const LobbyHome = ({}: any) => {
     <Layout>
       <Panel>
         <JoinHeader>
-          <JoinTitleText>
-            <FontAwesomeIcon icon={faWolfPackBattalion} />
-            <IconText>Werewolf Lobby</IconText>
-          </JoinTitleText>
+          <Title text="Werewolf Home" />
         </JoinHeader>
         <JoinMain>
           <FormContainer

@@ -17,7 +17,7 @@ const Popover = styled.div<PopoverProps>(({ open }) => ({
   padding: "0.5rem",
   marginTop: "0.1rem",
   backgroundColor: color.lightColor,
-  color: color.darkColorB,
+  color: color.midBlue,
   borderRadius: border.ContainerRadius,
   visibility: open ? "visible" : "hidden",
 }));
