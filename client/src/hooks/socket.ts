@@ -38,9 +38,9 @@ export type User = {
   userId: string;
 };
 
-export type Game = {
-  roomId: string;
-  user: User;
+export type LobbyInfo = {
+  currentRoomId: string;
+  currentUser: User;
 };
 
 const useSocket = ({
@@ -50,7 +50,10 @@ const useSocket = ({
   onConnected,
 }: SocketProps) => {
   const ref = useRef<Socket>();
-  const [gameInfo, setGameInfo] = useState<Game>();
+  const [lobbyInfo, setLobbyInfo] = useState<LobbyInfo>({
+    currentRoomId: "",
+    currentUser: { userId: "", userName: "" },
+  });
   const [messages, setMessages] = useState<Message[]>([]);
 
   const createRoom = (userName: string) => {
@@ -88,18 +91,19 @@ const useSocket = ({
       createRoom(userName);
     } else {
       // if there is roomId join it instead
+      setLobbyInfo({
+        currentRoomId: roomId,
+        currentUser: { userId: socket.id, userName },
+      } as LobbyInfo);
       join(roomId, userName);
     }
 
-    const info: Game = {
-      user: { userName, userId: socket.id },
-      roomId,
-    };
-    setGameInfo(info);
-
     socket.on(SocketEvent.CreateRoom, (roomId: string) => {
       console.log(`${roomId} room ID is received`);
-      // setGameInfo({ ...gameInfo, roomId } as Game);
+      setLobbyInfo({
+        currentRoomId: roomId,
+        currentUser: { userId: socket.id, userName },
+      } as LobbyInfo);
     });
 
     socket.on(SocketEvent.Message, (payload: Message) => {
@@ -126,6 +130,7 @@ const useSocket = ({
   }, [enabled, roomId, userName]);
 
   return {
+    lobbyInfo,
     messages,
     send,
   };

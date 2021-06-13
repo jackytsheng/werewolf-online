@@ -6,17 +6,24 @@ import TextField from "@material-ui/core/TextField";
 import useSocket, { Message } from "../hooks/socket";
 import useQuery from "../hooks/urlQuery";
 import { useHistory } from "react-router";
+import Popper from "../components/Popper";
 
 const BackWrapper = styled.div({
   display: "flex",
-  justifyContent: "center",
-  flexDirection: "column",
   position: "fixed",
-  alignItems: "center",
+  justifyContent: "center",
+  alignItems: "stretch",
   top: 0,
   bottom: 0,
   left: 0,
   right: 0,
+});
+
+const TextContainer = styled.div({
+  width: "40rem",
+  display: "flex",
+  flexDirection: "column",
+  paddingBottom: "1rem",
 });
 
 const MessageContainer = styled.div({
@@ -26,12 +33,10 @@ const MessageContainer = styled.div({
   backgroundColor: color.white,
 });
 
-const TextContainer = styled.div({
-  width: "40rem",
-  display: "flex",
-  flexDirection: "column",
-  flex: 1,
-  paddingBottom: "1rem",
+const SideContainer = styled.div({
+  width: "20rem",
+  marginRight: "5rem",
+  border: "1px solid back",
 });
 
 const Lobby = () => {
@@ -39,7 +44,7 @@ const Lobby = () => {
   const userName = decodeURI(useQuery("username"));
   const roomId = useQuery("room");
 
-  const { send, messages } = useSocket({ roomId, userName });
+  const { send, messages, lobbyInfo } = useSocket({ roomId, userName });
 
   const [value, setValue] = useState("");
 
@@ -78,6 +83,11 @@ const Lobby = () => {
           onKeyDown={onEnter}
         />
       </TextContainer>
+      <SideContainer>
+        <Popper
+          link={`${window.location.origin}/home?room=${lobbyInfo.currentRoomId}`}
+        />
+      </SideContainer>
     </BackWrapper>
   );
 };

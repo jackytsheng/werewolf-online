@@ -4,7 +4,7 @@ import { color, border } from "../themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWolfPackBattalion } from "@fortawesome/free-brands-svg-icons";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Button,
   FormControl,
