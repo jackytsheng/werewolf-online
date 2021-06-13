@@ -57,7 +57,7 @@ const Lobby = () => {
     const { key } = event;
     if (key === "Enter") {
       setValue("");
-      send(value);
+      value.trim() && send(value);
       event.preventDefault();
     }
   };

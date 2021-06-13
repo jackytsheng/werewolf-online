@@ -4,7 +4,7 @@ import io, { Socket } from "socket.io-client";
 // Credit to this Champ Jonas Grøndahl for the hook implmentation
 // Video is found here https://www.youtube.com/watch?v=R3UJAIMjWpU&ab_channel=JonasGr%C3%B8ndahl
 
-const baseUrl = "http://localhost:8000";
+const baseUrl = "192.168.0.9:8000";
 
 enum SocketEvent {
   Message = "message",

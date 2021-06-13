@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Button, makeStyles } from "@material-ui/core";
 import { color, border } from "../themes";
 import { usePopper } from "react-popper";
+import copy from "copy-to-clipboard";
 
 export type PopperProps = {
   link: string;
@@ -34,7 +35,7 @@ const Popper = ({ link }: PopperProps) => {
   const { styles, attributes } = usePopper(refEl.current, popperEl.current);
 
   const handleClick = () => {
-    navigator.clipboard.writeText(link);
+    copy(link);
     setPopperState(true);
 
     // Dismiss the popover after 3s
