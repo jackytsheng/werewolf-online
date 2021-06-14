@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import express from "express";
 import http from "http";
+import path from "path";
 import { JoinRoomPayload, Message, SocketEvent, User } from "./type";
 import { botSay, timestamp } from "./util/message-helper";
 import { Socket } from "socket.io";
@@ -8,6 +9,14 @@ const socket = require("socket.io");
 
 // I genuiently don't get the following shit
 const app = express();
+
+const SERVER_DIR = process.env.SERVER_DIR || "server/src";
+const CLINET_BUILD_DIR = process.env.BUILD_DIR || "client/build";
+const staticBuild = __dirname.replace(SERVER_DIR, CLINET_BUILD_DIR);
+
+console.log(timestamp(`Using build path ${staticBuild}`));
+app.use(express.static(staticBuild));
+
 const server = http.createServer(app);
 const io = socket(server, {
   cors: {
@@ -109,5 +118,5 @@ io.on(SocketEvent.Connection, (socket: Socket) => {
 const PORT = process.env.PORT || 8000;
 
 server.listen(PORT, () =>
-  console.log(`Socket.io server running on port ${PORT}`)
+  console.log(timestamp(`Socket.io server running on port ${PORT}`))
 );
