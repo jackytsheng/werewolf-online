@@ -68,7 +68,7 @@ const useSocket = ({
 
   const send = (content: string) => {
     const payload: Message = {
-      time: new Date().toLocaleTimeString(),
+      time: new Date().toLocaleTimeString("en-US"),
       userName,
       content,
     };

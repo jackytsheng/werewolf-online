@@ -13,6 +13,6 @@ const BOT_NAME = "Sponge Bot";
 
 export const botSay = (content: string): Message => ({
   userName: BOT_NAME,
-  time: new Date().toLocaleTimeString(),
+  time: new Date().toLocaleTimeString("en-US"),
   content,
 });

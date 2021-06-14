@@ -4,6 +4,7 @@ import { Button, makeStyles } from "@material-ui/core";
 import { color, border } from "../themes";
 import { usePopper } from "react-popper";
 import copy from "copy-to-clipboard";
+import { Text } from "./";
 
 export type PopperProps = {
   link: string;
@@ -45,7 +46,7 @@ const Popper = ({ link }: PopperProps) => {
   return (
     <PopperContainer>
       <Button ref={refEl} variant="outlined" onClick={handleClick}>
-        Copy Invite Link
+        <Text> Copy Invite Link </Text>
       </Button>
       <Popover
         open={popperState}

@@ -38,6 +38,7 @@ const BubbleWrapper = styled.div({
   borderRadius: border.ContainerRadius,
   overflowWrap: "break-word",
   backgroundColor: color.lightColor,
+  color: color.text,
 });
 
 const Text = styled.p({

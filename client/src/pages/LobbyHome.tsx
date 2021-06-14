@@ -12,7 +12,7 @@ import {
   withStyles,
 } from "@material-ui/core";
 import useQuery from "../hooks/urlQuery";
-import { Credit, Title } from "../components";
+import { Credit, Title, Text, IconText } from "../components";
 
 const Layout = styled.div({
   background: color.lightBlue,
@@ -64,11 +64,10 @@ const StyleOutlinedInput = withStyles({
       borderColor: color.framingBrown,
     },
   },
+  input: {
+    color: color.text,
+  },
 })(OutlinedInput);
-
-const IconText = styled.span({
-  margin: "0 0.4rem",
-});
 
 const LobbyHome = ({}: any) => {
   const [name, setName] = useState("");
@@ -120,8 +119,11 @@ const LobbyHome = ({}: any) => {
               variant="outlined"
               disabled={!name}
             >
-              <FontAwesomeIcon icon={faPlay} />
-              <IconText>{roomId ? "Join" : "Play"} </IconText>
+              <FontAwesomeIcon
+                icon={faPlay}
+                color={name ? color.text : undefined}
+              />
+              <IconText disabled={!name}>{roomId ? "Join" : "Play"} </IconText>
             </Button>
             <Button
               component={Link}
@@ -129,7 +131,7 @@ const LobbyHome = ({}: any) => {
               fullWidth={true}
               variant="outlined"
             >
-              Dealer
+              <Text>Dealer</Text>
             </Button>
           </FormContainer>
         </JoinMain>
