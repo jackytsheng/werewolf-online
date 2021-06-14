@@ -5,6 +5,7 @@ import { color } from "../themes";
 import useSocket, { Message } from "../hooks/socket";
 import useQuery from "../hooks/urlQuery";
 import { ChatBubble, CopyLinkPopper, Title } from "../components";
+import Seat from "../components/Seat";
 
 const CssTextField = withStyles({
   root: {
@@ -62,10 +63,8 @@ const Main = styled.div({
 
 const ChatSpace = styled.div({
   maxWidth: "60.5rem",
-  padding: "0 3rem",
   display: "flex",
-  flexDirection: "column",
-  overflow: "auto",
+  justifyContent: "center",
   backgroundColor: color.midBlue,
 });
 
@@ -83,6 +82,13 @@ const SideContainer = styled.div({
   width: "18rem",
   height: "3.4rem",
   display: "flex",
+});
+
+const SeatContainer = styled.div({
+  width: "12rem",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
 });
 
 const MenuBar = styled.div({
@@ -134,6 +140,16 @@ const Lobby = () => {
       </HeaderBar>
       <Main>
         <ChatSpace>
+          <SeatContainer>
+            <Seat namePos="right" name="Jacky" seatNumber={1} />
+            <Seat namePos="right" name="Jacky 2" seatNumber={2} />
+            <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={3} />
+            <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={4} />
+            <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={5} />
+            <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={6} />
+            <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={7} />
+            <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={8} />
+          </SeatContainer>
           <MessageContainer ref={messageContainerRef}>
             {messages.map((message: Message) => (
               <ChatBubble
@@ -144,6 +160,18 @@ const Lobby = () => {
               />
             ))}
           </MessageContainer>
+          <SeatContainer>
+            <Seat namePos="left" name="Jacky" seatNumber={9} />
+            <Seat namePos="left" name="Jacky 2" seatNumber={10} />
+            <Seat namePos="left" name="Jacky 3" seatNumber={11} />
+            <Seat namePos="left" isPlaceHolder={true} />
+            <Seat namePos="left" isPlaceHolder={true} />
+            <Seat namePos="left" isPlaceHolder={true} />
+            <Seat namePos="left" isPlaceHolder={true} />
+            <Seat namePos="left" isPlaceHolder={true} />
+            <Seat namePos="left" isPlaceHolder={true} />
+            <Seat namePos="left" isPlaceHolder={true} />
+          </SeatContainer>
         </ChatSpace>
       </Main>
       <BottomBar>

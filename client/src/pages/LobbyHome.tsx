@@ -72,6 +72,7 @@ const StyleOutlinedInput = withStyles({
 const LobbyHome = ({}: any) => {
   const [name, setName] = useState("");
   const roomId = useQuery("room");
+  const NAME_LIMIT = 20;
 
   useEffect(() => {
     console.log(`Room is set to be ${roomId}`);
@@ -79,7 +80,9 @@ const LobbyHome = ({}: any) => {
 
   const onEnterName = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setName(value.trim());
+
+    // max 20 character
+    setName(value.slice(0, NAME_LIMIT).trim());
   };
 
   return (
@@ -102,7 +105,7 @@ const LobbyHome = ({}: any) => {
               <StyleOutlinedInput
                 id="component-outlined"
                 label="Name"
-                placeholder="Enter Your Name"
+                placeholder={`Less than ${NAME_LIMIT} characters`}
                 onChange={onEnterName}
               />
             </FormControl>
