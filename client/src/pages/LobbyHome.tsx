@@ -9,6 +9,7 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
+  withStyles,
 } from "@material-ui/core";
 import useQuery from "../hooks/urlQuery";
 import { Credit, Title } from "../components";
@@ -49,6 +50,22 @@ const JoinMain = styled.main({
   borderBottomRightRadius: border.ContainerRadius,
 });
 
+const StyleInputLabel = withStyles({
+  root: {
+    "&.Mui-focused": {
+      color: color.framingBrown,
+    },
+  },
+})(InputLabel);
+
+const StyleOutlinedInput = withStyles({
+  root: {
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: color.framingBrown,
+    },
+  },
+})(OutlinedInput);
+
 const IconText = styled.span({
   margin: "0 0.4rem",
 });
@@ -82,8 +99,10 @@ const LobbyHome = ({}: any) => {
             }}
           >
             <FormControl fullWidth={true} variant="outlined" margin="normal">
-              <InputLabel htmlFor="component-outlined">Name</InputLabel>
-              <OutlinedInput
+              <StyleInputLabel htmlFor="component-outlined">
+                Name
+              </StyleInputLabel>
+              <StyleOutlinedInput
                 id="component-outlined"
                 label="Name"
                 placeholder="Enter Your Name"
