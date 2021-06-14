@@ -1,13 +1,5 @@
-const breakpoint = {
-  medium: (...css: any) =>
-    `@media (max-width: 600px) {
-      ${css}
-    }
-  `,
-};
-
-export enum breakpoints {
-  medium = 600,
+export enum breakpoint {
+  medium = 700,
 }
 
 export default breakpoint;

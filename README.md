@@ -4,6 +4,8 @@
 
 React & Styled Component & Ts
 
+Responsive via useWindowSize hook
+
 #### Library:
 
 Material-UI, React Router Dom, Popper JS

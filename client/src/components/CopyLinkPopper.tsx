@@ -8,7 +8,7 @@ import { usePopper } from "react-popper";
 import copy from "copy-to-clipboard";
 import { IconText } from ".";
 import useWindowSize from "../hooks/useWindowSize";
-import { breakpoints } from "../themes/breakpoint";
+import { breakpoint } from "../themes/breakpoint";
 
 export type PopperProps = {
   link: string;
@@ -53,7 +53,7 @@ const CopyLinkPopper = ({ link }: PopperProps) => {
     <PopperContainer>
       <Button ref={refEl} variant="contained" onClick={handleClick}>
         <FontAwesomeIcon icon={faLink} color={color.text} />
-        {width! > breakpoints.medium && <IconText>Copy Invite Link</IconText>}
+        {width! > breakpoint.medium && <IconText>Copy Invite Link</IconText>}
       </Button>
       <Popover
         open={popperState}

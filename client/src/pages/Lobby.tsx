@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { TextField, withStyles } from "@material-ui/core";
-import { color } from "../themes";
+import { breakpoint, color } from "../themes";
 import useSocket, { Message } from "../hooks/socket";
 import useQuery from "../hooks/urlQuery";
 import { ChatBubble, CopyLinkPopper, Title } from "../components";
@@ -85,7 +85,6 @@ const SideContainer = styled.div({
 });
 
 const SeatContainer = styled.div({
-  width: "12rem",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -143,7 +142,7 @@ const Lobby = () => {
           <SeatContainer>
             <Seat namePos="right" name="Jacky" seatNumber={1} />
             <Seat namePos="right" name="Jacky 2" seatNumber={2} />
-            <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={3} />
+            <Seat namePos="right" name="aaaaaaaaaaaaaaaaaaaa" seatNumber={3} />
             <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={4} />
             <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={5} />
             <Seat namePos="right" name="Jacky 3sdfsdef" seatNumber={6} />
@@ -164,8 +163,6 @@ const Lobby = () => {
             <Seat namePos="left" name="Jacky" seatNumber={9} />
             <Seat namePos="left" name="Jacky 2" seatNumber={10} />
             <Seat namePos="left" name="Jacky 3" seatNumber={11} />
-            <Seat namePos="left" isPlaceHolder={true} />
-            <Seat namePos="left" isPlaceHolder={true} />
             <Seat namePos="left" isPlaceHolder={true} />
             <Seat namePos="left" isPlaceHolder={true} />
             <Seat namePos="left" isPlaceHolder={true} />

@@ -1,28 +1,36 @@
 import React from "react";
 import styled from "styled-components";
+import useWindowSize from "../hooks/useWindowSize";
 import { color } from "../themes";
+import { breakpoint } from "../themes/breakpoint";
 
-const UserCircle = styled.div<Pick<SeatProps, "isPlaceHolder">>(
-  ({ isPlaceHolder }) => ({
-    width: "3.5rem",
-    height: "3.5rem",
+type UserCircleProps = {
+  useMobileSize?: boolean;
+} & Pick<SeatProps, "isPlaceHolder">;
+
+const UserCircle = styled.div<UserCircleProps>(
+  ({ isPlaceHolder, useMobileSize = false }) => ({
+    width: useMobileSize ? "3rem" : "3.5rem",
+    height: useMobileSize ? "3rem" : "3.5rem",
+    border: `solid 0.25rem ${color.darkBlue}`,
     borderRadius: "50%",
     backgroundColor: color.lightBlue,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    border: `solid 0.25rem ${color.darkBlue}`,
     ...(isPlaceHolder && { visibility: "hidden" }),
   })
 );
 
-const NumberIcon = styled.span({
-  fontSize: "2rem",
-  fontWeight: "bold",
-  color: color.darkBlue,
-  marginTop: "0.9rem",
-  fontFamily: "'Baloo Tammudu 2', cursive",
-});
+const NumberIcon = styled.span<Pick<UserCircleProps, "useMobileSize">>(
+  ({ useMobileSize }) => ({
+    fontSize: useMobileSize ? "1.6rem" : "2rem",
+    fontWeight: "bold",
+    color: color.darkBlue,
+    marginTop: "0.9rem",
+    fontFamily: "'Baloo Tammudu 2', cursive",
+  })
+);
 
 const SeatSlot = styled.div<Pick<SeatProps, "namePos">>(({ namePos }) => ({
   display: "flex",
@@ -33,8 +41,9 @@ const SeatSlot = styled.div<Pick<SeatProps, "namePos">>(({ namePos }) => ({
 
 const NameTag = styled.span({
   color: color.beige,
-  flex: 1,
+  width: "6rem",
   margin: "0 0.5rem",
+  overflowWrap: "break-word",
 });
 
 export type SeatProps = {
@@ -49,13 +58,18 @@ const Seat = ({
   seatNumber,
   name,
   isPlaceHolder = false,
-}: SeatProps) => (
-  <SeatSlot namePos={namePos}>
-    <UserCircle isPlaceHolder={isPlaceHolder}>
-      <NumberIcon>{seatNumber}</NumberIcon>
-    </UserCircle>
-    <NameTag>{name}</NameTag>
-  </SeatSlot>
-);
+}: SeatProps) => {
+  const { width } = useWindowSize();
+  const useMobileSize = width! < breakpoint.medium;
+
+  return (
+    <SeatSlot namePos={namePos}>
+      <UserCircle isPlaceHolder={isPlaceHolder} useMobileSize={useMobileSize}>
+        <NumberIcon useMobileSize={useMobileSize}>{seatNumber}</NumberIcon>
+      </UserCircle>
+      {!useMobileSize && <NameTag>{name}</NameTag>}
+    </SeatSlot>
+  );
+};
 
 export default Seat;
