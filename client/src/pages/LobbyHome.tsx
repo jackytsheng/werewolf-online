@@ -11,7 +11,7 @@ import {
   OutlinedInput,
 } from "@material-ui/core";
 import useQuery from "../hooks/urlQuery";
-import { Title } from "../components";
+import { Credit, Title } from "../components";
 
 const Layout = styled.div({
   background: color.lightBlue,
@@ -115,6 +115,7 @@ const LobbyHome = ({}: any) => {
           </FormContainer>
         </JoinMain>
       </Panel>
+      <Credit />
     </Layout>
   );
 };
