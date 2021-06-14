@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { color } from "../themes";
 
 type IconText = {
-  disabled: boolean;
+  disabled?: boolean;
 };
 
-export const IconText = styled.span<IconText>(({ disabled }) => ({
+export const IconText = styled.span<IconText>(({ disabled = false }) => ({
   margin: "0 0.4rem",
   ...(!disabled && { color: color.text }),
 }));

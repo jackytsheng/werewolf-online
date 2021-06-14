@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { color, border } from "../themes";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { color, border } from "../themes";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -78,8 +78,6 @@ const LobbyHome = ({}: any) => {
   }, [roomId]);
 
   const onEnterName = (event: ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
     const { value } = event.target;
     setName(value.trim());
   };
@@ -123,7 +121,7 @@ const LobbyHome = ({}: any) => {
                 icon={faPlay}
                 color={name ? color.text : undefined}
               />
-              <IconText disabled={!name}>{roomId ? "Join" : "Play"} </IconText>
+              <IconText disabled={!name}>{roomId ? "Join" : "Play"}</IconText>
             </Button>
             <Button
               component={Link}

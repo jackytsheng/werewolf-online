@@ -4,7 +4,7 @@ import { TextField, withStyles } from "@material-ui/core";
 import { color } from "../themes";
 import useSocket, { Message } from "../hooks/socket";
 import useQuery from "../hooks/urlQuery";
-import { ChatBubble, Popper, Title } from "../components";
+import { ChatBubble, CopyLinkPopper, Title } from "../components";
 
 const CssTextField = withStyles({
   root: {
@@ -41,8 +41,9 @@ const Bar = styled.div({
 
 const HeaderBar = styled(Bar)({
   height: "10%",
-  paddingLeft: "2rem",
+  padding: "0 2rem",
   alignItems: "center",
+  justifyContent: "space-between",
 });
 
 const BottomBar = styled(Bar)({
@@ -127,6 +128,9 @@ const Lobby = () => {
     <BackWrapper>
       <HeaderBar>
         <Title text="Werewolf Lobby" />
+        <CopyLinkPopper
+          link={`${window.location.origin}/home?room=${lobbyInfo.currentRoomId}`}
+        />
       </HeaderBar>
       <Main>
         <ChatSpace>
@@ -141,11 +145,6 @@ const Lobby = () => {
             ))}
           </MessageContainer>
         </ChatSpace>
-        <MenuBar>
-          <Popper
-            link={`${window.location.origin}/home?room=${lobbyInfo.currentRoomId}`}
-          />
-        </MenuBar>
       </Main>
       <BottomBar>
         <SideContainer>
