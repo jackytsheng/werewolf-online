@@ -1,17 +1,17 @@
-import { randomUUID } from "crypto";
-import express from "express";
-import http from "http";
-import path from "path";
-import { JoinRoomPayload, Message, SocketEvent, User } from "./type";
-import { botSay, timestamp } from "./util/message-helper";
-import { Socket } from "socket.io";
-const socket = require("socket.io");
+import { randomUUID } from 'crypto';
+import express from 'express';
+import http from 'http';
+import path from 'path';
+import { JoinRoomPayload, Message, SocketEvent, User } from './type';
+import { botSay, timestamp } from './util/message-helper';
+import { Socket } from 'socket.io';
+const socket = require('socket.io');
 
 // I genuiently don't get the following shit
 const app = express();
 
-const SERVER_DIR = process.env.SERVER_DIR || "server/src";
-const CLINET_BUILD_DIR = process.env.BUILD_DIR || "client/build";
+const SERVER_DIR = process.env.SERVER_DIR || 'server/src';
+const CLINET_BUILD_DIR = process.env.BUILD_DIR || 'client/build';
 const staticBuild = __dirname.replace(SERVER_DIR, CLINET_BUILD_DIR);
 
 console.log(timestamp(`Using build path ${staticBuild}`));
@@ -20,8 +20,8 @@ app.use(express.static(staticBuild));
 const server = http.createServer(app);
 const io = socket(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
+    origin: '*',
+    methods: ['GET', 'POST'],
   },
 });
 

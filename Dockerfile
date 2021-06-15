@@ -8,10 +8,10 @@ COPY client .
 RUN npm build
 
 WORKDIR /server
-COPY server/package.json server/
-COPY server/package-lock.json server/
+COPY server/package.json .
+COPY server/package-lock.json .
 RUN npm install
 COPY server .
 
-EXPOSE 8000
+EXPOSE 3000
 CMD ["npm","start"]
