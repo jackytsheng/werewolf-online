@@ -10,12 +10,12 @@ const socket = require('socket.io');
 // I genuiently don't get the following shit
 const app = express();
 
-const SERVER_DIR = process.env.SERVER_DIR || 'server/src';
-const CLINET_BUILD_DIR = process.env.BUILD_DIR || 'client/build';
-const staticBuild = __dirname.replace(SERVER_DIR, CLINET_BUILD_DIR);
+// const SERVER_DIR = process.env.SERVER_DIR || 'server/src';
+// const CLINET_BUILD_DIR = process.env.BUILD_DIR || 'client/build';
+// const staticBuild = __dirname.replace(SERVER_DIR, CLINET_BUILD_DIR);
 
-console.log(timestamp(`Using build path ${staticBuild}`));
-app.use(express.static(staticBuild));
+// console.log(timestamp(`Using build path ${staticBuild}`));
+// app.use(express.static(staticBuild));
 
 const server = http.createServer(app);
 const io = socket(server, {

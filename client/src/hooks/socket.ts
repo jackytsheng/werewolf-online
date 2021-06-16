@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
-import io, { Socket } from "socket.io-client";
+import React, { useEffect, useState, useRef } from 'react';
+import io, { Socket } from 'socket.io-client';
 
 // Credit to this Champ Jonas Grøndahl for the hook implmentation
 // Video is found here https://www.youtube.com/watch?v=R3UJAIMjWpU&ab_channel=JonasGr%C3%B8ndahl
 
-const baseUrl = "192.168.0.9:8000";
+const baseUrl = 'localhost:8000';
 
 enum SocketEvent {
-  Message = "message",
-  JoinRoom = "joinRoom",
-  CreateRoom = "createRoom",
-  Connect = "connect",
-  Disconnect = "disconnect",
-  Reconnect = "reconnect",
+  Message = 'message',
+  JoinRoom = 'joinRoom',
+  CreateRoom = 'createRoom',
+  Connect = 'connect',
+  Disconnect = 'disconnect',
+  Reconnect = 'reconnect',
 }
 
 type SocketProps = {
@@ -51,8 +51,8 @@ const useSocket = ({
 }: SocketProps) => {
   const ref = useRef<Socket>();
   const [lobbyInfo, setLobbyInfo] = useState<LobbyInfo>({
-    currentRoomId: "",
-    currentUser: { userId: "", userName: "" },
+    currentRoomId: '',
+    currentUser: { userId: '', userName: '' },
   });
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -68,7 +68,7 @@ const useSocket = ({
 
   const send = (content: string) => {
     const payload: Message = {
-      time: new Date().toLocaleTimeString("en-US"),
+      time: new Date().toLocaleTimeString('en-US'),
       userName,
       content,
     };
@@ -120,7 +120,7 @@ const useSocket = ({
     });
 
     socket.on(SocketEvent.Reconnect, () => {
-      console.log("reconnect successful");
+      console.log('reconnect successful');
     });
 
     // clean up when the property changes or dismounted
