@@ -5,12 +5,18 @@ export type Message = {
 };
 
 export enum SocketEvent {
-  Message = "message",
-  JoinRoom = "joinRoom",
-  CreateRoom = "createRoom",
-  Connection = "connection",
-  Disconnect = "disconnect",
+  Message = 'message',
+  JoinRoom = 'joinRoom',
+  CreateRoom = 'createRoom',
+  Connection = 'connection',
+  Disconnect = 'disconnect',
+  RoomInfo = 'roomInfo',
 }
+
+export type RoomInfo = {
+  roomId: string;
+  users: User[];
+};
 
 export type User = {
   roomId: string;
@@ -24,10 +30,10 @@ export type JoinRoomPayload = {
 };
 
 export enum Role {
-  WEREWOLF = "WEREWOLF",
-  WITCH = "WITCH",
-  VILLAGER = "VILLAGER",
-  HUNTER = "HUNTER",
-  PROPHET = "PROPHET",
-  IDIOT = "IDIOT",
+  WEREWOLF = 'WEREWOLF',
+  WITCH = 'WITCH',
+  VILLAGER = 'VILLAGER',
+  HUNTER = 'HUNTER',
+  PROPHET = 'PROPHET',
+  IDIOT = 'IDIOT',
 }

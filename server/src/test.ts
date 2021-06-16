@@ -1,5 +1,5 @@
-import Dealer from "./game/Dealer";
-import { Role } from "./type";
+import Dealer from './game/Dealer';
+import { Role } from './type';
 
 const testDealer = new Dealer([
   Role.HUNTER,

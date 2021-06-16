@@ -1,8 +1,7 @@
 import { randomUUID } from 'crypto';
 import express from 'express';
 import http from 'http';
-import path from 'path';
-import { JoinRoomPayload, Message, SocketEvent, User } from './type';
+import { JoinRoomPayload, Message, RoomInfo, SocketEvent, User } from './type';
 import { botSay, timestamp } from './util/message-helper';
 import { Socket } from 'socket.io';
 const socket = require('socket.io');
@@ -29,19 +28,39 @@ let roomsId: string[] = [];
 let users: User[] = [];
 
 io.on(SocketEvent.Connection, (socket: Socket) => {
-  let thisRoomId: string;
-  let thisUser: User;
+  let thisUser: User = {
+    roomId: '',
+    userId: '',
+    userName: '',
+  };
+  let thisRoomInfo: RoomInfo = {
+    users: [],
+    roomId: '',
+  };
 
   console.log(timestamp(`${socket.id} established connection`));
+
+  const storeInfo = (roomId: string, userId: string, userName: string) => {
+    thisRoomInfo.roomId = roomId;
+
+    let user: User = {
+      roomId,
+      userId,
+      userName,
+    };
+
+    // store this at the global level for all users
+    thisUser = user;
+    users.push(user);
+
+    thisRoomInfo.users = users.filter((user) => user.roomId === roomId);
+  };
 
   socket.on(SocketEvent.CreateRoom, (userName: string) => {
     const roomId = randomUUID();
     socket.join(roomId);
-    thisRoomId = roomId;
-    roomsId.push(thisRoomId);
-
-    thisUser = { userId: socket.id, userName, roomId };
-    users.push(thisUser);
+    roomsId.push(roomId);
+    storeInfo(roomId, socket.id, userName);
 
     console.log(
       timestamp(
@@ -53,20 +72,13 @@ io.on(SocketEvent.Connection, (socket: Socket) => {
       SocketEvent.Message,
       botSay(`Welcome to the lobby ${userName}`)
     );
-    socket.emit(SocketEvent.CreateRoom, thisRoomId);
+    socket.emit(SocketEvent.CreateRoom, thisRoomInfo.roomId);
+    io.in(thisRoomInfo.roomId).emit(SocketEvent.RoomInfo, thisRoomInfo);
   });
 
   socket.on(SocketEvent.JoinRoom, ({ roomId, userName }: JoinRoomPayload) => {
     socket.join(roomId);
-
-    thisRoomId = roomId;
-    thisUser = {
-      userName,
-      roomId,
-      userId: socket.id,
-    };
-
-    users.push(thisUser);
+    storeInfo(roomId, socket.id, userName);
 
     console.log(
       timestamp(
@@ -82,6 +94,7 @@ io.on(SocketEvent.Connection, (socket: Socket) => {
     socket
       .to(thisUser.roomId)
       .emit(SocketEvent.Message, botSay(`${thisUser.userName} joined lobby`));
+    io.in(thisRoomInfo.roomId).emit(SocketEvent.RoomInfo, thisRoomInfo);
   });
 
   socket.on(SocketEvent.Message, (payload: Message) => {
@@ -91,27 +104,26 @@ io.on(SocketEvent.Connection, (socket: Socket) => {
       )
     );
 
-    io.in(thisRoomId).emit(SocketEvent.Message, payload);
+    io.in(thisRoomInfo.roomId).emit(SocketEvent.Message, payload);
   });
 
   socket.on(SocketEvent.Disconnect, () => {
-    users = users.filter((user) => {
-      if (user.userId !== socket.id) {
-        console.log(
-          timestamp(
-            `[On ${SocketEvent.Disconnect} Event] ${socket.id} disconnect from room ${thisRoomId}`
-          )
-        );
+    console.log(
+      timestamp(
+        `[On ${SocketEvent.Disconnect} Event] ${socket.id} disconnect from room ${thisRoomInfo.roomId}`
+      )
+    );
 
-        socket
-          .to(thisRoomId)
-          .emit(SocketEvent.Message, botSay(`${user.userName} left lobby`));
+    socket
+      .to(thisRoomInfo.roomId)
+      .emit(SocketEvent.Message, botSay(`${thisUser.userName} left lobby`));
 
-        return false;
-      } else {
-        return true;
-      }
-    });
+    users = users.filter((user) => user.userId !== socket.id);
+    thisRoomInfo.users = users.filter(
+      (user) => user.roomId === thisRoomInfo.roomId
+    );
+
+    io.in(thisRoomInfo.roomId).emit(SocketEvent.RoomInfo, thisRoomInfo);
   });
 });
 

@@ -13,6 +13,7 @@ enum SocketEvent {
   Connect = 'connect',
   Disconnect = 'disconnect',
   Reconnect = 'reconnect',
+  RoomInfo = 'roomInfo',
 }
 
 type SocketProps = {
@@ -38,6 +39,10 @@ export type User = {
   userId: string;
 };
 
+export type RoomInfo = {
+  roomId: string;
+  users: User[];
+};
 export type LobbyInfo = {
   currentRoomId: string;
   currentUser: User;
@@ -100,6 +105,8 @@ const useSocket = ({
 
     socket.on(SocketEvent.CreateRoom, (roomId: string) => {
       console.log(`${roomId} room ID is received`);
+      console.log();
+      // window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
       setLobbyInfo({
         currentRoomId: roomId,
         currentUser: { userId: socket.id, userName },
@@ -117,6 +124,10 @@ const useSocket = ({
       }
       console.log(`${socket.id} is connected`);
       console.log(`Socket is connected at ${baseUrl}`);
+    });
+
+    socket.on(SocketEvent.RoomInfo, (roomInfo: RoomInfo) => {
+      console.log(roomInfo);
     });
 
     socket.on(SocketEvent.Reconnect, () => {
