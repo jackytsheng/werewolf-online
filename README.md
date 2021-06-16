@@ -1,3 +1,5 @@
+[![Build](https://github.com/jackytsheng/werewolf-online/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/jackytsheng/werewolf-online/actions/workflows/build.yml)
+
 ## Stacks & Techs
 
 ### FrontEnd:
