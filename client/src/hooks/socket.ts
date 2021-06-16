@@ -105,8 +105,13 @@ const useSocket = ({
 
     socket.on(SocketEvent.CreateRoom, (roomId: string) => {
       console.log(`${roomId} room ID is received`);
-      console.log();
-      // window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
+
+      // this replace the newest history while maintaining the state
+      window.history.replaceState(
+        window.history.state,
+        '',
+        `${window.location.href}&room=${roomId}`
+      );
       setLobbyInfo({
         currentRoomId: roomId,
         currentUser: { userId: socket.id, userName },
