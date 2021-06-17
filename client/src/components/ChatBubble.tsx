@@ -1,20 +1,20 @@
-import React from "react";
-import styled from "styled-components";
-import { Message } from "../hooks/socket";
-import { border, color } from "../themes";
+import React from 'react';
+import styled from 'styled-components';
+import { Message } from '../hooks/type';
+import { border, color } from '../themes';
 
 const TimeStyle = styled.span({
   color: color.meta,
-  marginLeft: "0.25rem",
-  fontWeight: "normal",
+  marginLeft: '0.25rem',
+  fontWeight: 'normal',
 });
 
 const Meta = styled.p({
-  fontSize: "0.9375rem",
-  fontWeight: "bold",
+  fontSize: '0.9375rem',
+  fontWeight: 'bold',
   color: color.midBlue,
   opacity: 0.7,
-  marginBottom: "0.4375rem",
+  marginBottom: '0.4375rem',
 });
 
 type MetaTextProps = {
@@ -33,16 +33,16 @@ const MetaText: React.FC<MetaTextProps> = ({
 );
 
 const BubbleWrapper = styled.div({
-  padding: "0.625rem",
-  marginBottom: "0.9375rem",
+  padding: '0.625rem',
+  marginBottom: '0.9375rem',
   borderRadius: border.ContainerRadius,
-  overflowWrap: "break-word",
+  overflowWrap: 'break-word',
   backgroundColor: color.lightColor,
   color: color.text,
 });
 
 const Text = styled.p({
-  marginBottom: "1rem",
+  marginBottom: '1rem',
 });
 
 const ChatBubble: React.FC<Message> = ({

@@ -1,52 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
+import {
+  SocketProps,
+  LobbyInfo,
+  Message,
+  SocketEvent,
+  JoinRoomPayload,
+  RoomInfo,
+} from './type';
 
 // Credit to this Champ Jonas Grøndahl for the hook implmentation
 // Video is found here https://www.youtube.com/watch?v=R3UJAIMjWpU&ab_channel=JonasGr%C3%B8ndahl
 
 const baseUrl = 'localhost:8000';
-
-enum SocketEvent {
-  Message = 'message',
-  JoinRoom = 'joinRoom',
-  CreateRoom = 'createRoom',
-  Connect = 'connect',
-  Disconnect = 'disconnect',
-  Reconnect = 'reconnect',
-  RoomInfo = 'roomInfo',
-}
-
-type SocketProps = {
-  roomId: string;
-  userName: string;
-  enabled?: boolean;
-  onConnected?: () => void;
-};
-
-type JoinRoomPayload = {
-  roomId: string;
-  userName: string;
-};
-
-export type Message = {
-  content: string;
-  userName: string;
-  time: string;
-};
-
-export type User = {
-  userName: string;
-  userId: string;
-};
-
-export type RoomInfo = {
-  roomId: string;
-  users: User[];
-};
-export type LobbyInfo = {
-  currentRoomId: string;
-  currentUser: User;
-};
 
 const useSocket = ({
   roomId,
