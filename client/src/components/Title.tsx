@@ -1,21 +1,24 @@
-import React from "react";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWolfPackBattalion } from "@fortawesome/free-brands-svg-icons";
-import { breakpoint, color } from "../themes";
-import useWindowSize from "../hooks/useWindowSize";
+import React from 'react';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWolfPackBattalion } from '@fortawesome/free-brands-svg-icons';
+import { breakpoint, color } from '../themes';
+import useWindowSize from '../hooks/useWindowSize';
+import { IconText } from '.';
 
 type TitleTextProps = {
   useMobileSize?: boolean;
 };
 
-const TitleText = styled.h1<TitleTextProps>(({ useMobileSize = false }) => ({
+const TitleText = styled.h1(({ useMobileSize = false }: TitleTextProps) => ({
   color: color.beige,
-  ...(useMobileSize && { fontSize: "1.5rem" }),
+  ...(useMobileSize && { fontSize: '1.5rem' }),
 }));
 
-const IconText = styled.span({
-  margin: "0 0.4rem",
+export const SubtitleText = styled.p({
+  color: color.text,
+  fontWeight: 'bold',
+  fontSize: '1.3rem',
 });
 
 export type TitleProps = {

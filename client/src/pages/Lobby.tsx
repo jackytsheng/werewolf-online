@@ -14,6 +14,7 @@ import {
 } from '../components';
 import Seat from '../components/Seat';
 import Modal from '../components/Modal';
+import UserList from '../components/UserList';
 
 const CssTextField = withStyles({
   root: {
@@ -198,7 +199,11 @@ const Lobby = () => {
         <BarButton variant='setting' onClick={() => setUserModal(true)} />
       </BottomBar>
 
-      {userModal && <Modal onClickClose={() => setUserModal(false)}>GG</Modal>}
+      {userModal && (
+        <Modal onClickClose={() => setUserModal(false)}>
+          <UserList users={lobbyInfo.users} />
+        </Modal>
+      )}
     </BackWrapper>
   );
 };

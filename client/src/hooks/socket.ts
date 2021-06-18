@@ -24,6 +24,7 @@ const useSocket = ({
   const [lobbyInfo, setLobbyInfo] = useState<LobbyInfo>({
     currentRoomId: '',
     currentUser: { userId: '', userName: '' },
+    users: [],
   });
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -62,9 +63,12 @@ const useSocket = ({
       createRoom(userName);
     } else {
       // if there is roomId join it instead
+      const currentUser = { userId: socket.id, userName };
+
       setLobbyInfo({
         currentRoomId: roomId,
-        currentUser: { userId: socket.id, userName },
+        currentUser,
+        users: [currentUser],
       } as LobbyInfo);
       join(roomId, userName);
     }
@@ -78,9 +82,12 @@ const useSocket = ({
         '',
         `${window.location.href}&room=${roomId}`
       );
+
+      const currentUser = { userId: socket.id, userName };
       setLobbyInfo({
         currentRoomId: roomId,
-        currentUser: { userId: socket.id, userName },
+        currentUser,
+        users: [currentUser],
       } as LobbyInfo);
     });
 
@@ -98,6 +105,7 @@ const useSocket = ({
     });
 
     socket.on(SocketEvent.RoomInfo, (roomInfo: RoomInfo) => {
+      setLobbyInfo((prev) => ({ ...prev, users: roomInfo.users }));
       console.log(roomInfo);
     });
 

@@ -1,5 +1,4 @@
-import React from 'react';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { border, color } from '../themes';
 import { flexCenter, windowFix } from '../utils/styles';

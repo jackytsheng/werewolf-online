@@ -38,4 +38,5 @@ export type RoomInfo = {
 export type LobbyInfo = {
   currentRoomId: string;
   currentUser: User;
+  users: User[];
 };
