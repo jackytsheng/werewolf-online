@@ -1,5 +1,5 @@
-import border from "./border";
-import breakpoint from "./breakpoint";
-import color from "./color";
+import border from './border';
+import breakpoint from './breakpoint';
+import { color, opacity } from './color';
 
-export { color, border, breakpoint };
+export { color, border, breakpoint, opacity };

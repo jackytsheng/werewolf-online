@@ -1,12 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { TextField, withStyles } from '@material-ui/core';
+import { TextField, withStyles, Button } from '@material-ui/core';
 import { color } from '../themes';
 import { Message } from '../hooks/type';
 import useSocket from '../hooks/socket';
 import useQuery from '../hooks/urlQuery';
-import { ChatBubble, CopyLinkPopper, Title } from '../components';
+import {
+  BarButton,
+  ChatBubble,
+  CopyLinkPopper,
+  IconText,
+  Title,
+} from '../components';
 import Seat from '../components/Seat';
+import Modal from '../components/Modal';
 
 const CssTextField = withStyles({
   root: {
@@ -27,12 +34,12 @@ const CssTextField = withStyles({
 
 const BackWrapper = styled.div({
   display: 'flex',
-  position: 'fixed',
   flexDirection: 'column',
+  position: 'fixed',
   top: 0,
   bottom: 0,
-  left: 0,
   right: 0,
+  left: 0,
 });
 
 const Bar = styled.div({
@@ -79,7 +86,7 @@ const MessageContainer = styled.div({
   backgroundColor: color.beige,
 });
 
-const SideContainer = styled.div({
+const InputContainer = styled.div({
   width: '18rem',
   height: '3.4rem',
   display: 'flex',
@@ -93,7 +100,6 @@ const SeatContainer = styled.div({
 
 const MenuBar = styled.div({
   padding: '0.5rem',
-  // backgroundColor: color.beige,
   height: '30%',
   right: 0,
   top: 0,
@@ -111,6 +117,7 @@ const Lobby = () => {
   const { send, messages, lobbyInfo } = useSocket({ roomId, userName });
 
   const [value, setValue] = useState('');
+  const [userModal, setUserModal] = useState(false);
 
   useEffect(() => {
     const el = messageContainerRef?.current;
@@ -173,7 +180,8 @@ const Lobby = () => {
         </ChatSpace>
       </Main>
       <BottomBar>
-        <SideContainer>
+        <BarButton variant='users' onClick={() => setUserModal(true)} />
+        <InputContainer>
           <CssTextField
             id='multi-line-input'
             label='Enter Message'
@@ -185,8 +193,12 @@ const Lobby = () => {
             onChange={onType}
             onKeyDown={onEnter}
           />
-        </SideContainer>
+        </InputContainer>
+
+        <BarButton variant='setting' onClick={() => setUserModal(true)} />
       </BottomBar>
+
+      {userModal && <Modal onClickClose={() => setUserModal(false)}>GG</Modal>}
     </BackWrapper>
   );
 };
