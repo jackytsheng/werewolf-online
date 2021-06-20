@@ -31,7 +31,7 @@ const Title = ({ text }: TitleProps) => {
   return (
     <TitleText useMobileSize={useMobileSize}>
       <FontAwesomeIcon icon={faWolfPackBattalion} />
-      <IconText>{text}</IconText>
+      <IconText textColor={'inherit'}>{text}</IconText>
     </TitleText>
   );
 };

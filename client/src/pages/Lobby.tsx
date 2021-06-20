@@ -5,16 +5,12 @@ import { color } from '../themes';
 import { Message } from '../hooks/type';
 import useSocket from '../hooks/socket';
 import useQuery from '../hooks/urlQuery';
-import {
-  BarButton,
-  ChatBubble,
-  CopyLinkPopper,
-  IconText,
-  Title,
-} from '../components';
+import { BarButton, ChatBubble, CopyLinkPopper, Title } from '../components';
 import Seat from '../components/Seat';
 import Modal from '../components/Modal';
 import UserList from '../components/UserList';
+import GameSetting from '../components/GameSetting';
+import { RolesCategory } from '../components/GameType';
 
 const CssTextField = withStyles({
   root: {
@@ -119,6 +115,21 @@ const Lobby = () => {
 
   const [value, setValue] = useState('');
   const [userModal, setUserModal] = useState(false);
+  const [settingModal, setSettingModal] = useState(false);
+  const [roles, setRoles] = useState([
+    RolesCategory.WEREWOLF,
+    RolesCategory.WEREWOLF,
+    RolesCategory.WEREWOLF,
+    RolesCategory.WEREWOLF,
+    RolesCategory.PROPHET,
+    RolesCategory.WITCH,
+    RolesCategory.HUNTER,
+    RolesCategory.FOOL,
+    RolesCategory.VILLAGER,
+    RolesCategory.VILLAGER,
+    RolesCategory.VILLAGER,
+    RolesCategory.VILLAGER,
+  ]);
 
   useEffect(() => {
     const el = messageContainerRef?.current;
@@ -196,12 +207,20 @@ const Lobby = () => {
           />
         </InputContainer>
 
-        <BarButton variant='setting' onClick={() => setUserModal(true)} />
+        <BarButton variant='setting' onClick={() => setSettingModal(true)} />
       </BottomBar>
 
       {userModal && (
         <Modal onClickClose={() => setUserModal(false)}>
           <UserList users={lobbyInfo.users} />
+        </Modal>
+      )}
+      {settingModal && (
+        <Modal onClickClose={() => setSettingModal(false)}>
+          <GameSetting
+            roles={roles}
+            setRoles={(roles: RolesCategory[]) => setRoles(roles)}
+          />
         </Modal>
       )}
     </BackWrapper>
