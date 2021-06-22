@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { SubtitleText, Text } from '.';
 import { border, color } from '../themes';
 import getRolesObj, {
-  getFullRoleObjects,
+  getFullRolesCategory,
   Role,
   RolesCategory,
+  validateGameSetting,
 } from './GameType';
 
-const Wrapper = styled.div({});
+const Wrapper = styled.div({
+  paddingBottom: '0.7rem',
+});
 
 const RoleOptionWrapper = styled.div({
   margin: '0.3rem 0',
@@ -32,7 +35,7 @@ const Item = styled.div<ItemProps>(
     display: 'flex',
     justifyContent: 'center',
     color: textColor,
-    '& hover': {
+    '&:hover': {
       cursor: 'pointer',
     },
     ...(isPlaceHolder && { visibility: 'hidden' }),
@@ -62,16 +65,33 @@ type GameSettingProps = {
 // For adding filler item to make flex works
 const ROLES_DISPLAY_PER_ROW = 5;
 const GameSetting = ({ roles, setRoles }: GameSettingProps) => {
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    let timeOutAsync: NodeJS.Timeout;
+    if (errorMessage) {
+      timeOutAsync = setTimeout(() => setErrorMessage(''), 2000);
+    }
+    return () => {
+      clearTimeout(timeOutAsync);
+    };
+  }, [errorMessage]);
   return (
     <Wrapper>
       <SubtitleText>Current Game Setting</SubtitleText>
-      <Text>{'(Click to remove)'}</Text>
+      <Text>Currently {roles.length} Players. Click to remove</Text>
+
       <RoleOptionWrapper>
         {roles.map((role: RolesCategory, i: number) => (
           <RoleItem
             key={`${getRolesObj(role).shortName}_${i}`}
             role={getRolesObj(role)}
-            onClick={() => {}}
+            onClick={() => {
+              const newRoles = roles.filter((_, j) => i !== j);
+              const error = validateGameSetting(newRoles).errorMessage;
+              setErrorMessage(error);
+              !error && setRoles(newRoles.sort());
+            }}
           />
         ))}
         {Array(
@@ -83,21 +103,28 @@ const GameSetting = ({ roles, setRoles }: GameSettingProps) => {
           .map((_, i: number) => {
             return <RoleItem key={`PlaceHolder_${i}`} isPlaceHolder={true} />;
           })}
-        {}
       </RoleOptionWrapper>
+
       <SubtitleText>Role Setting</SubtitleText>
-      <Text>{'(Click to add)'}</Text>
+      <Text>Click to add</Text>
+
       <RoleOptionWrapper>
-        {getFullRoleObjects().map((role: Role, i: number) => (
+        {getFullRolesCategory().map((role: RolesCategory, i: number) => (
           <RoleItem
-            key={`${role.shortName}_${i}`}
-            role={role}
-            onClick={() => {}}
+            key={`${getRolesObj(role).shortName}_${i}`}
+            role={getRolesObj(role)}
+            onClick={() => {
+              const newRoles = [...roles, role];
+              const error = validateGameSetting(newRoles).errorMessage;
+              setErrorMessage(error);
+              !error && setRoles(newRoles.sort());
+            }}
           />
         ))}
         {Array(
-          getFullRoleObjects().length % ROLES_DISPLAY_PER_ROW
-            ? ROLES_DISPLAY_PER_ROW - (roles.length % ROLES_DISPLAY_PER_ROW)
+          getFullRolesCategory().length % ROLES_DISPLAY_PER_ROW
+            ? ROLES_DISPLAY_PER_ROW -
+                (getFullRolesCategory().length % ROLES_DISPLAY_PER_ROW)
             : 0
         )
           .fill(0)
@@ -105,6 +132,11 @@ const GameSetting = ({ roles, setRoles }: GameSettingProps) => {
             <RoleItem key={`PlaceHolder_${i}`} isPlaceHolder={true} />
           ))}
       </RoleOptionWrapper>
+      {errorMessage ? (
+        <Text textColor={color.errorColor}>{errorMessage}</Text>
+      ) : (
+        <Text>Close to save</Text>
+      )}
     </Wrapper>
   );
 };

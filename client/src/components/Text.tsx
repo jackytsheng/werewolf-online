@@ -14,6 +14,10 @@ export const IconText = styled.span(
   })
 );
 
-export const Text = styled.span({
-  color: color.text,
-});
+type TextType = {
+  textColor?: string;
+};
+
+export const Text = styled.span(({ textColor = color.text }: TextType) => ({
+  color: textColor,
+}));

@@ -10,7 +10,7 @@ import Seat from '../components/Seat';
 import Modal from '../components/Modal';
 import UserList from '../components/UserList';
 import GameSetting from '../components/GameSetting';
-import { RolesCategory } from '../components/GameType';
+import { RolesCategory, validateGameSetting } from '../components/GameType';
 
 const CssTextField = withStyles({
   root: {
@@ -116,20 +116,22 @@ const Lobby = () => {
   const [value, setValue] = useState('');
   const [userModal, setUserModal] = useState(false);
   const [settingModal, setSettingModal] = useState(false);
-  const [roles, setRoles] = useState([
-    RolesCategory.WEREWOLF,
-    RolesCategory.WEREWOLF,
-    RolesCategory.WEREWOLF,
-    RolesCategory.WEREWOLF,
-    RolesCategory.PROPHET,
-    RolesCategory.WITCH,
-    RolesCategory.HUNTER,
-    RolesCategory.FOOL,
-    RolesCategory.VILLAGER,
-    RolesCategory.VILLAGER,
-    RolesCategory.VILLAGER,
-    RolesCategory.VILLAGER,
-  ]);
+  const [roles, setRoles] = useState(
+    [
+      RolesCategory.WEREWOLF,
+      RolesCategory.WEREWOLF,
+      RolesCategory.WEREWOLF,
+      RolesCategory.WEREWOLF,
+      RolesCategory.PROPHET,
+      RolesCategory.WITCH,
+      RolesCategory.HUNTER,
+      RolesCategory.FOOL,
+      RolesCategory.VILLAGER,
+      RolesCategory.VILLAGER,
+      RolesCategory.VILLAGER,
+      RolesCategory.VILLAGER,
+    ].sort()
+  );
 
   useEffect(() => {
     const el = messageContainerRef?.current;
@@ -160,14 +162,26 @@ const Lobby = () => {
       <Main>
         <ChatSpace>
           <SeatContainer>
-            <Seat namePos='right' name='Jacky' seatNumber={1} />
-            <Seat namePos='right' name='Jacky 2' seatNumber={2} />
-            <Seat namePos='right' name='aaaaaaaaaaaaaaaaaaaa' seatNumber={3} />
-            <Seat namePos='right' name='Jacky 3sdfsdef' seatNumber={4} />
-            <Seat namePos='right' name='Jacky 3sdfsdef' seatNumber={5} />
-            <Seat namePos='right' name='Jacky 3sdfsdef' seatNumber={6} />
-            <Seat namePos='right' name='Jacky 3sdfsdef' seatNumber={7} />
-            <Seat namePos='right' name='Jacky 3sdfsdef' seatNumber={8} />
+            {/* TODO: Replace this with Player Slot */}
+            {Array(roles.length < 8 ? roles.length : 8)
+              .fill(undefined)
+              .map((_, i) => (
+                <Seat
+                  key={`Seat-${i}`}
+                  namePos='right'
+                  name='Jacky'
+                  seatNumber={i + 1}
+                />
+              ))}
+            {Array(roles.length < 8 ? 8 - (roles.length % 8) : 0)
+              .fill(undefined)
+              .map((_, i) => (
+                <Seat
+                  key={`placeHolder-${i}`}
+                  namePos='right'
+                  isPlaceHolder={true}
+                />
+              ))}
           </SeatContainer>
           <MessageContainer ref={messageContainerRef}>
             {messages.map((message: Message) => (
@@ -180,14 +194,25 @@ const Lobby = () => {
             ))}
           </MessageContainer>
           <SeatContainer>
-            <Seat namePos='left' name='Jacky' seatNumber={9} />
-            <Seat namePos='left' name='Jacky 2' seatNumber={10} />
-            <Seat namePos='left' name='Jacky 3' seatNumber={11} />
-            <Seat namePos='left' isPlaceHolder={true} />
-            <Seat namePos='left' isPlaceHolder={true} />
-            <Seat namePos='left' isPlaceHolder={true} />
-            <Seat namePos='left' isPlaceHolder={true} />
-            <Seat namePos='left' isPlaceHolder={true} />
+            {Array(roles.length > 8 ? roles.length - 8 : 0)
+              .fill(undefined)
+              .map((_, i) => (
+                <Seat
+                  key={`Seat-${i + 9}`}
+                  namePos='left'
+                  name='Jacky'
+                  seatNumber={i + 9}
+                />
+              ))}
+            {Array(roles.length < 9 ? 8 : 8 - (roles.length % 8 || 8))
+              .fill(undefined)
+              .map((_, i) => (
+                <Seat
+                  key={`PlaceHolder-${i + 9}`}
+                  namePos='left'
+                  isPlaceHolder={true}
+                />
+              ))}
           </SeatContainer>
         </ChatSpace>
       </Main>

@@ -13,15 +13,59 @@ export enum RolesCategory {
   WHITEWOLF,
 }
 
-export const getFullRoleObjects = (): Role[] =>
+export const getFullRolesCategory = (): RolesCategory[] =>
   Object.keys(RolesCategory)
     .filter((e) => {
       const regexp = /[0-9]/g;
       return regexp.test(e);
     })
     .map((c: string) => {
-      return getRolesObj(parseInt(c) as unknown as RolesCategory);
+      return parseInt(c) as unknown as RolesCategory;
     });
+
+type Validate = {
+  result: boolean;
+  errorMessage: string;
+};
+
+export const validateGameSetting = (roles: RolesCategory[]): Validate => {
+  let roleCounts: any = {};
+  const LEAST_PLAYERS = 5;
+  const MOST_PLAYERS = 16;
+
+  roles.forEach(
+    (role) => (roleCounts[role] = roleCounts[role] ? roleCounts[role] + 1 : 1)
+  );
+
+  if (roles.length < LEAST_PLAYERS || roles.length > MOST_PLAYERS) {
+    return {
+      result: false,
+      errorMessage:
+        roles.length < LEAST_PLAYERS
+          ? `You need more than ${LEAST_PLAYERS} Players`
+          : 'Too much players',
+    };
+  }
+
+  // Not allow following role to have more than 1
+  let isValid = true;
+  Object.keys(roleCounts).forEach((role) => {
+    // turn enum into string then compare
+    if (
+      role !== JSON.stringify(RolesCategory.WEREWOLF as unknown as number) &&
+      role !== JSON.stringify(RolesCategory.VILLAGER as unknown as number)
+    ) {
+      if (roleCounts[role] > 1) {
+        isValid = false;
+      }
+    }
+  });
+
+  return {
+    result: isValid,
+    errorMessage: !isValid ? "You can't have more than one of this role" : '',
+  };
+};
 
 export type Role = {
   color: string;
