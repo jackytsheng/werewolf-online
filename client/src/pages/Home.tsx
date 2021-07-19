@@ -69,7 +69,7 @@ const StyleOutlinedInput = withStyles({
   },
 })(OutlinedInput);
 
-const LobbyHome = ({}: any) => {
+const Home = ({}: any) => {
   const [name, setName] = useState('');
   const roomId = useQuery('room');
   const NAME_LIMIT = 20;
@@ -142,4 +142,4 @@ const LobbyHome = ({}: any) => {
   );
 };
 
-export default LobbyHome;
+export default Home;
