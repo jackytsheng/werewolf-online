@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import io, { Socket } from 'socket.io-client';
+import { storeToSession } from '../utils/storeToSession';
 import {
   SocketProps,
   LobbyInfo,
@@ -48,7 +49,7 @@ const useSocket = ({
   };
 
   useEffect((): any => {
-    // its for advance asynchronus call to conditally disable this hook, but in this project it may not be necessary
+    // if not enabled, socket won't be connected
     if (!enabled) {
       return;
     }
@@ -76,12 +77,8 @@ const useSocket = ({
     socket.on(SocketEvent.CreateRoom, (roomId: string) => {
       console.log(`${roomId} room ID is received`);
 
-      // this replace the newest history while maintaining the state
-      window.history.replaceState(
-        window.history.state,
-        '',
-        `${window.location.href}&room=${roomId}`
-      );
+      // this store the roomId into the sessionSorage
+      storeToSession({ roomId });
 
       const currentUser = { userId: socket.id, userName };
       setLobbyInfo({

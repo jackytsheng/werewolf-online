@@ -8,6 +8,7 @@ import {
 import Lobby from './pages/Lobby';
 import Home from './pages/Home';
 import Dealer from './pages/Dealer';
+import { Path } from './utils/url';
 
 // TODO: Implement Google analysis
 // ReactGA.pageview('/homepage')
@@ -16,16 +17,16 @@ const AppRouter = () => {
   return (
     <Router>
       <Switch>
-        <Route path='/' exact>
-          <Redirect to='/home' />
+        <Route path={Path.Root} exact>
+          <Redirect to={Path.Home} />
         </Route>
-        <Route path='/lobby' exact>
+        <Route path={Path.Lobby} exact>
           <Lobby />
         </Route>
-        <Route path='/home' exact>
+        <Route path={Path.Home} exact>
           <Home />
         </Route>
-        <Route path='/dealer' exact>
+        <Route path={Path.Dealer} exact>
           <Dealer />
         </Route>
       </Switch>

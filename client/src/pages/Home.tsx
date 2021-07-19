@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { color, border } from '../themes';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {
   Button,
   FormControl,
@@ -13,6 +13,8 @@ import {
 } from '@material-ui/core';
 import useQuery from '../hooks/urlQuery';
 import { Credit, Title, Text, IconText } from '../components';
+import { Path, setUrl } from '../utils/url';
+import { Item, storeToSession } from '../utils/storeToSession';
 
 const Layout = styled.div({
   background: color.lightBlue,
@@ -71,11 +73,20 @@ const StyleOutlinedInput = withStyles({
 
 const Home = ({}: any) => {
   const [name, setName] = useState('');
+
+  const storedUsername = sessionStorage.getItem(Item.UserName);
+  const storedRoomId = sessionStorage.getItem(Item.RoomId);
   const roomId = useQuery('room');
+  // if session have record both room Id and name then direct it to the lobby
+  // if roomId exist, user probably pasted another game url here
+  // if working correctly session should not just have either username or roomId
+  const shouldRedirect = !roomId && storedUsername && storedRoomId;
   const NAME_LIMIT = 20;
 
   useEffect(() => {
-    console.log(`Room is set to be ${roomId}`);
+    if (!roomId) return;
+    storeToSession({ roomId });
+    setUrl(Path.Home);
   }, [roomId]);
 
   const onEnterName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -111,11 +122,8 @@ const Home = ({}: any) => {
             </FormControl>
             <Button
               component={Link}
-              to={
-                roomId
-                  ? `/lobby?room=${roomId}&username=${encodeURI(name)}`
-                  : `/lobby?username=${name}`
-              }
+              to='/lobby'
+              onClick={() => sessionStorage.setItem('username', name)}
               fullWidth={true}
               variant='outlined'
               disabled={!name}

@@ -11,6 +11,10 @@ import Modal from '../components/Modal';
 import UserList from '../components/UserList';
 import GameSetting from '../components/GameSetting';
 import { RolesCategory, validateGameSetting } from '../components/GameType';
+import { Redirect } from 'react-router-dom';
+import { initialGameSetting } from '../configs/gameSetting';
+import { Item } from '../utils/storeToSession';
+import { Path } from '../utils/url';
 
 const CssTextField = withStyles({
   root: {
@@ -107,31 +111,21 @@ const MenuBar = styled.div({
 
 const Lobby = () => {
   // get username and room from uri
-  const userName = decodeURI(useQuery('username'));
+  const userName = sessionStorage.getItem(Item.UserName) || '';
+  const roomId = sessionStorage.getItem(Item.RoomId) || '';
   const messageContainerRef = useRef<HTMLDivElement>(null);
-  const roomId = useQuery('room');
+  const hasUserName = !!userName;
 
-  const { send, messages, lobbyInfo } = useSocket({ roomId, userName });
+  const { send, messages, lobbyInfo } = useSocket({
+    roomId,
+    userName,
+    enabled: hasUserName,
+  });
 
   const [value, setValue] = useState('');
   const [userModal, setUserModal] = useState(false);
   const [settingModal, setSettingModal] = useState(false);
-  const [roles, setRoles] = useState(
-    [
-      RolesCategory.WEREWOLF,
-      RolesCategory.WEREWOLF,
-      RolesCategory.WEREWOLF,
-      RolesCategory.WEREWOLF,
-      RolesCategory.PROPHET,
-      RolesCategory.WITCH,
-      RolesCategory.HUNTER,
-      RolesCategory.FOOL,
-      RolesCategory.VILLAGER,
-      RolesCategory.VILLAGER,
-      RolesCategory.VILLAGER,
-      RolesCategory.VILLAGER,
-    ].sort()
-  );
+  const [roles, setRoles] = useState(initialGameSetting);
 
   useEffect(() => {
     const el = messageContainerRef?.current;
@@ -153,6 +147,7 @@ const Lobby = () => {
   };
   return (
     <BackWrapper>
+      {!hasUserName && <Redirect to={Path.Home} />}
       <HeaderBar>
         <Title text='Werewolf Lobby' />
         <CopyLinkPopper
